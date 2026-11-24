@@ -271,6 +271,29 @@ svg.i.sm{width:14px;height:14px;stroke-width:2;}
 .tg.on{background:var(--green);}
 .tg.on::after{left:21px;}
 
+.av{display:inline-flex;align-items:center;justify-content:center;border-radius:50%;color:#fff;font-weight:700;flex:0 0 auto;}
+.who{display:flex;align-items:center;gap:10px;width:100%;border:1px solid var(--line);background:var(--bg);border-radius:12px;padding:8px 10px;margin:0 0 14px;text-align:left;}
+.who:hover{border-color:var(--faint);}
+.who b{flex:1;font-size:14px;}
+.who small{color:var(--faint);font-size:12px;}
+.pick{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px;}
+.pick-box{width:100%;max-width:380px;text-align:center;}
+.pick-box h1{font-size:26px;margin:18px 0 6px;letter-spacing:-.4px;}
+.pick-box p{color:var(--dim);margin:0 0 26px;}
+.pick-btn{display:flex;align-items:center;gap:14px;width:100%;background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:16px 18px;margin-bottom:10px;font-size:17px;font-weight:700;text-align:left;box-shadow:var(--shadow);}
+.pick-btn:hover{border-color:var(--accent);}
+.sync-line{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--faint);padding:8px 12px 0;line-height:1.4;border:none;background:none;text-align:left;width:100%;}
+.sync-line:hover{color:var(--dim);}
+.sdot{width:8px;height:8px;border-radius:50%;flex:0 0 8px;background:var(--faint);}
+.sdot.ok{background:var(--green);} .sdot.busy{background:var(--p2);} .sdot.err{background:var(--p3);}
+.icon-btn{position:relative;}
+.icon-btn .sdot{position:absolute;top:8px;right:8px;width:7px;height:7px;}
+.banner{display:flex;align-items:center;gap:12px;background:var(--accent-soft);color:var(--accent);border-radius:var(--radius);padding:12px 14px;margin-bottom:22px;font-size:14px;}
+.banner b{display:block;color:var(--text);}
+.banner span.t{flex:1;color:var(--dim);font-size:13px;}
+.banner .x{border:none;background:none;color:var(--faint);display:flex;padding:4px;}
+.code-box{display:flex;align-items:center;gap:8px;background:var(--bg);border:1px dashed var(--faint);border-radius:12px;padding:12px 14px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:17px;font-weight:700;letter-spacing:1px;}
+.code-box span{flex:1;word-break:break-all;}
 .note{font-size:12.5px;color:var(--dim);background:var(--surface-2);border-radius:10px;padding:10px 12px;line-height:1.5;}
 
 /* ---------- toast ---------- */
@@ -298,24 +321,173 @@ svg.i.sm{width:14px;height:14px;stroke-width:2;}
    ========================================================= */
 
 /* ---------------- almacenamiento ---------------- */
-const LS_DATA = "midplaner_v2";
+const LS_DATA_OLD = "midplaner_v2";
+const LS_PROFILE = "midplaner_profile";
+/* ---- dos usuarios: cada quien con sus tareas y rutinas ---- */
+const PROFILES = {
+  edgar:  {name:"Edgar",  color:"#3B5BDB"},
+  monica: {name:"Mónica", color:"#C2255C"},
+};
+let profile = PROFILES[localStorage.getItem(LS_PROFILE)] ? localStorage.getItem(LS_PROFILE) : "";
+const dataKey = (p=profile) => "midplaner_v2_" + (p||"edgar");
+// lo que se capturó antes de que hubiera usuarios pasa a Edgar
+try{
+  if(localStorage.getItem(LS_DATA_OLD) && !localStorage.getItem(dataKey("edgar"))){
+    localStorage.setItem(dataKey("edgar"), localStorage.getItem(LS_DATA_OLD));
+    localStorage.removeItem(LS_DATA_OLD);
+  }
+}catch(e){}
 const LS_THEME = "midplaner_theme";
 const LS_NOTIF = "midplaner_notif";
+const LS_CODE = "midplaner_sync_code";
+const LS_HINT = "midplaner_sync_hint_off";
+
+/* ---- Supabase (sincronización por código, sin inicio de sesión) ----
+   La clave publicable es pública por diseño. La tabla está cerrada:
+   solo se llega a tus datos con tu código de sincronización. */
+const SB_URL = "https://savkihtjsvzmahcgvygr.supabase.co";
+const SB_KEY = "sb_publishable_u9vum-h6roZid1UFmpW7Yw_EbZ-srT9";
 
 let db = loadDb();
+function emptyDb(){ return {tasks:[], routines:[], deleted:{}}; }
 function loadDb(){
   try{
-    const d = JSON.parse(localStorage.getItem(LS_DATA));
-    if(d && Array.isArray(d.tasks)) return {tasks:d.tasks, routines:Array.isArray(d.routines)?d.routines:[]};
+    const d = JSON.parse(localStorage.getItem(dataKey()));
+    if(d && Array.isArray(d.tasks)) return {tasks:d.tasks, routines:Array.isArray(d.routines)?d.routines:[], deleted:d.deleted||{}};
   }catch(e){}
-  return {tasks:[], routines:[]};
+  return emptyDb();
 }
-function save(){
-  try{ localStorage.setItem(LS_DATA, JSON.stringify(db)); }
+/* Cada cambio queda marcado con la hora (u) y cada borrado deja una marca
+   en db.deleted, para poder juntar lo de la PC y lo del celular sin perder nada. */
+let snap = new Map();
+const itemSig = it => { const {u, ...r} = it; return JSON.stringify(r); };
+function rebuildSnap(){ snap = new Map(); ["tasks","routines"].forEach(k=>db[k].forEach(it=>snap.set(it.id, itemSig(it)))); }
+rebuildSnap();
+function stamp(){
+  const now = Date.now(), seen = new Set();
+  db.deleted = db.deleted || {};
+  ["tasks","routines"].forEach(k=>db[k].forEach(it=>{
+    seen.add(it.id);
+    const j = itemSig(it);
+    if(snap.get(it.id)!==j){ it.u = now; snap.set(it.id, j); }
+  }));
+  for(const id of [...snap.keys()]) if(!seen.has(id)){ db.deleted[id] = now; snap.delete(id); }
+}
+function persistLocal(){
+  try{ localStorage.setItem(dataKey(), JSON.stringify(db)); }
   catch(e){ toast("No se pudo guardar en este navegador"); }
 }
+function save(){ stamp(); persistLocal(); scheduleSync(); }
 // Si tienes MIDPLANER abierto en dos pestañas, se mantienen iguales.
-window.addEventListener("storage", e=>{ if(e.key===LS_DATA){ db = loadDb(); render(); } });
+window.addEventListener("storage", e=>{ if(e.key===dataKey()){ db = loadDb(); rebuildSnap(); if(!$(".overlay")) render(); } });
+
+/* ---------------- sincronización ---------------- */
+const sync = { code: localStorage.getItem(LS_CODE)||"", status: "off", last: null, error: "" };
+let syncing = false, syncAgain = false, syncTimer = null;
+function setSync(st, err){
+  sync.status = st; sync.error = err||"";
+  document.querySelectorAll("[data-sync-dot]").forEach(el=>{ el.className = "sdot "+st; });
+  const line = $("#sync-text"); if(line) line.textContent = syncText();
+}
+function syncText(){
+  if(!sync.code) return "Sin sincronizar · Activar";
+  if(sync.status==="busy") return "Sincronizando…";
+  if(sync.status==="err") return navigator.onLine ? "Error al sincronizar" : "Sin internet · se guarda aquí";
+  if(sync.last){
+    const m = Math.round((Date.now()-sync.last)/60000);
+    return "Sincronizado " + (m<1 ? "ahora" : m===1 ? "hace 1 min" : m<60 ? `hace ${m} min` : "hace un rato");
+  }
+  return "Sincronización activa";
+}
+function scheduleSync(delay=1200){
+  if(!sync.code) return;
+  clearTimeout(syncTimer);
+  syncTimer = setTimeout(syncNow, delay);
+}
+async function rpc(fn, body){
+  const r = await fetch(`${SB_URL}/rest/v1/rpc/${fn}`, {
+    method:"POST",
+    headers:{ apikey:SB_KEY, Authorization:"Bearer "+SB_KEY, "Content-Type":"application/json" },
+    body: JSON.stringify(body), cache:"no-store"
+  });
+  if(!r.ok) throw new Error("HTTP "+r.status+" "+(await r.text()).slice(0,200));
+  const t = await r.text();
+  return t ? JSON.parse(t) : null;
+}
+function mergeDb(a, b){
+  const del = {...(a.deleted||{})};
+  for(const [k,v] of Object.entries(b.deleted||{})) if(!(del[k] >= v)) del[k] = v;
+  const cutoff = Date.now() - 90*864e5;
+  for(const k in del) if(del[k] < cutoff) delete del[k];
+  const out = {deleted:del};
+  ["tasks","routines"].forEach(k=>{
+    const m = new Map();
+    [...(a[k]||[]), ...(b[k]||[])].forEach(it=>{
+      if(!it || !it.id) return;
+      const cur = m.get(it.id);
+      if(!cur || (it.u||0) > (cur.u||0)) m.set(it.id, it);
+    });
+    out[k] = [...m.values()].filter(it => !(del[it.id] >= (it.u||0)));
+  });
+  return out;
+}
+function dbSig(d){
+  const byId = (x,y)=> x.id<y.id?-1:1;
+  return JSON.stringify([[...(d.tasks||[])].sort(byId), [...(d.routines||[])].sort(byId), Object.keys(d.deleted||{}).sort().map(k=>[k,d.deleted[k]])]);
+}
+async function syncNow(){
+  if(!sync.code || !profile) return;
+  if(syncing){ syncAgain = true; return; }
+  syncing = true; setSync("busy");
+  try{
+    const myCode = sync.code + ":" + profile;
+    const res = await rpc("mp_pull", {p_code: myCode});
+    const remote = (res && res.data) ? res.data : emptyDb();
+    stamp(); // por si hubo cambios mientras se descargaba
+    const merged = mergeDb(db, remote);
+    const mSig = dbSig(merged);
+    if(mSig !== dbSig(db)){
+      if($(".overlay")){ syncing = false; setSync("ok"); scheduleSync(2500); return; } // no cambiar datos con una ventana abierta
+      db = merged; rebuildSnap(); persistLocal(); render();
+    }
+    if(mSig !== dbSig(remote)){
+      await rpc("mp_push", {p_code: myCode, p_data: {tasks:merged.tasks, routines:merged.routines, deleted:merged.deleted}});
+    }
+    sync.last = Date.now(); setSync("ok");
+  }catch(e){
+    console.warn("sync", e); setSync("err", e.message);
+  }
+  syncing = false;
+  if(syncAgain){ syncAgain = false; scheduleSync(300); }
+}
+function setProfile(p){
+  if(!PROFILES[p]) return;
+  if(profile){ stamp(); persistLocal(); }
+  profile = p; localStorage.setItem(LS_PROFILE, p);
+  db = loadDb(); rebuildSnap(); sync.last = null;
+  ui.view = "hoy"; closeSheet(true); render(); window.scrollTo(0,0);
+  if(sync.code) syncNow();
+}
+function avatar(p, size=28){
+  const pr = PROFILES[p]; if(!pr) return "";
+  return `<span class="av" style="width:${size}px;height:${size}px;background:${pr.color};font-size:${Math.round(size*.45)}px">${pr.name[0]}</span>`;
+}
+function newCode(){
+  const abc = "abcdefghjkmnpqrstuvwxyz23456789";
+  const rnd = new Uint32Array(16); crypto.getRandomValues(rnd);
+  let c = ""; for(let i=0;i<16;i++){ if(i && i%4===0) c += "-"; c += abc[rnd[i]%abc.length]; }
+  return c;
+}
+function connectCode(code){
+  code = String(code||"").trim().toLowerCase().replace(/\s+/g,"");
+  if(code.length < 8){ toast("El código debe tener al menos 8 caracteres"); return false; }
+  sync.code = code; localStorage.setItem(LS_CODE, code);
+  sync.last = null; syncNow();
+  return true;
+}
+setInterval(()=>{ if(sync.code && !document.hidden) syncNow(); else setSync(sync.code?sync.status:"off"); }, 30000);
+window.addEventListener("online", ()=>scheduleSync(200));
+document.addEventListener("visibilitychange", ()=>{ if(!document.hidden) scheduleSync(200); });
 
 /* ---------------- utilidades ---------------- */
 const $ = s => document.querySelector(s);
@@ -370,6 +542,8 @@ const ICONS = {
   trash:'<path d="M3 6h18M8 6V4h8v2M6 6l1 14h10l1-14"/>',
   bell:'<path d="M6 8a6 6 0 1 1 12 0c0 7 3 8 3 8H3s3-1 3-8"/><path d="M10 21a2 2 0 0 0 4 0"/>',
   notes:'<path d="M4 6h16M4 12h16M4 18h10"/>',
+  cloud:'<path d="M7 18a5 5 0 1 1 .9-9.9A6 6 0 0 1 19 10a4 4 0 0 1-1 8H7z"/>',
+  copy:'<rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a1 1 0 0 1 1-1h10"/>',
   sub:'<path d="M9 6h11M9 12h11M9 18h11"/><path d="M4 5.5l1 1 2-2M4 11.5l1 1 2-2"/>',
 };
 const ic = (n, cls="") => `<svg class="i ${cls}" viewBox="0 0 24 24">${ICONS[n]||""}</svg>`;
@@ -493,6 +667,17 @@ function parseQuick(text){
 
 /* ---------------- render general ---------------- */
 function render(){
+  if(!profile){
+    $("#sidebar").style.display = "none"; $("#tabbar").style.display = "none"; $("#fab").style.display = "none";
+    $("#page").innerHTML = `<div class="pick"><div class="pick-box">
+      <div class="brand" style="justify-content:center;padding:0"><div class="logo" style="width:46px;height:46px;border-radius:14px">${ic("check")}</div></div>
+      <h1>¿Quién eres?</h1><p>Cada quien tiene sus propias tareas y rutinas.</p>
+      ${Object.keys(PROFILES).map(k=>`<button class="pick-btn" data-act="pick-user" data-p="${k}">${avatar(k,40)}${PROFILES[k].name}</button>`).join("")}
+      <p style="font-size:12.5px;margin-top:18px">Puedes cambiar de usuario cuando quieras.</p>
+    </div></div>`;
+    return;
+  }
+  $("#sidebar").style.display = ""; $("#tabbar").style.display = ""; $("#fab").style.display = "";
   renderSidebar();
   renderTabbar();
   renderPage();
@@ -514,6 +699,7 @@ function renderSidebar(){
   const c = counts();
   $("#sidebar").innerHTML = `
     <div class="brand"><div class="logo">${ic("check")}</div><b>MIDPLANER</b></div>
+    <button class="who" data-act="switch-user">${avatar(profile)}<b>${PROFILES[profile].name}</b><small>Cambiar</small></button>
     ${VIEWS.map(v=>`
       <button class="nav ${ui.view===v.id?"on":""}" data-act="view" data-v="${v.id}">
         ${ic(v.icon)}<span>${v.label}</span>
@@ -521,7 +707,7 @@ function renderSidebar(){
       </button>`).join("")}
     <div class="side-foot">
       <button class="nav" data-act="settings">${ic("gear")}<span>Ajustes</span></button>
-      <div class="store">Tus datos se guardan en este navegador. Haz un respaldo desde Ajustes.</div>
+      <button class="sync-line" data-act="settings"><span data-sync-dot class="sdot ${sync.code?sync.status:"off"}"></span><span id="sync-text">${syncText()}</span></button>
     </div>`;
 }
 function renderTabbar(){
@@ -537,8 +723,9 @@ function headHtml(title, sub){
   return `<div class="head">
     <div><h1>${title}</h1>${sub?`<div class="subtitle">${sub}</div>`:""}</div>
     <div class="head-btns">
+      <button class="icon-btn only-mobile" data-act="switch-user" title="Cambiar usuario">${avatar(profile,26)}</button>
+      <button class="icon-btn only-mobile" data-act="settings" title="Sincronización">${ic("cloud")}<span data-sync-dot class="sdot ${sync.code?sync.status:"off"}"></span></button>
       <button class="icon-btn" data-act="go-search" title="Buscar">${ic("search")}</button>
-      <button class="icon-btn only-mobile" data-act="settings" title="Ajustes">${ic("gear")}</button>
     </div>
   </div>`;
 }
@@ -669,11 +856,14 @@ function viewHoy(){
   else if(done===total) msg = "¡Todo listo por hoy! 🎉";
   else msg = `Te faltan ${total-done} de ${total}${late.length?` · ${late.length} vencida${late.length>1?"s":""}`:""}`;
 
-  let h = headHtml(greeting(), cap(longDate(t)));
+  let h = headHtml(`${greeting()}, ${PROFILES[profile].name}`, cap(longDate(t)));
   h += `<div class="hero">
     <div class="ring"><svg viewBox="0 0 58 58"><circle class="bg" cx="29" cy="29" r="25"/><circle class="fg" cx="29" cy="29" r="25" stroke-dasharray="${C}" stroke-dashoffset="${C*(1-pct/100)}"/></svg><div class="pct">${pct}%</div></div>
     <div><div class="h1">${total ? `${done} de ${total} hechas` : "Sin pendientes"}</div><div class="h2">${msg}</div></div>
   </div>`;
+  if(!sync.code && localStorage.getItem(LS_HINT)!=="1"){
+    h += `<div class="banner">${ic("cloud")}<span class="t"><b>Tus tareas en la PC y el celular</b>Activa la sincronización con un código.</span><button class="btn pri" data-act="settings">Activar</button><button class="x" data-act="hide-hint">${ic("x","sm")}</button></div>`;
+  }
   h += quickAddHtml();
   if(late.length) h += section("Vencidas", late.length, late.map(x=>taskRow(x)).join(""), {late:true, action:`<button class="link" data-act="move-late">Pasar todo a hoy</button>`});
   if(rts.length) h += section("Rutinas", `${rts.filter(r=>routineDone(r,t)).length}/${rts.length}`, rts.map(r=>routineRow(r,t)).join(""));
@@ -804,6 +994,9 @@ document.addEventListener("click", e=>{
       break;
     }
     case "settings": openSettings(); break;
+    case "switch-user": setProfile(profile==="edgar" ? "monica" : "edgar"); toast(`Ahora ves las tareas de ${PROFILES[profile].name}`); break;
+    case "pick-user": setProfile(el.dataset.p); break;
+    case "hide-hint": localStorage.setItem(LS_HINT,"1"); render(); break;
     case "go-search": go("todas"); setTimeout(()=>{ const s=$("#search-in"); if(s) s.focus(); }, 30); break;
   }
 });
@@ -840,7 +1033,7 @@ function openSheet(html){
 }
 function closeSheet(silent){
   const ov = $(".overlay");
-  if(ov){ ov.remove(); if(!silent) render(); }
+  if(ov){ ov.remove(); if(!silent){ render(); scheduleSync(150); } }
 }
 
 /* ---------- detalle de tarea (guarda solo) ---------- */
@@ -987,6 +1180,25 @@ function openSettings(){
     sh.innerHTML = `
       <div class="sh-top"><h3>Ajustes</h3><button class="icon-btn" id="g-close">${ic("x")}</button></div>
       <div class="sh-body">
+        <div class="fld"><label>Usuario</label>
+          <div class="chips">${Object.keys(PROFILES).map(k=>`<button class="chip ${profile===k?"on":""}" data-pu="${k}">${PROFILES[k].name}</button>`).join("")}</div>
+        </div>
+        <div class="fld"><label>${ic("cloud","sm")}Sincronización</label>
+          ${sync.code ? `
+            <div class="note" style="margin-bottom:10px">Edgar y Mónica usan este mismo código en todos sus dispositivos (Ajustes → "Ya tengo un código"). Cada quien sigue viendo solo sus tareas. No lo compartas con nadie más.</div>
+            <div class="code-box"><span>${esc(sync.code)}</span><button class="icon-btn" id="g-copy" title="Copiar">${ic("copy")}</button></div>
+            <div style="display:flex;align-items:center;gap:8px;margin:12px 0 4px;font-size:13px;color:var(--dim)"><span data-sync-dot class="sdot ${sync.status}"></span><span id="g-status">${esc(syncText())}${sync.status==="err"&&sync.error?` · ${esc(sync.error)}`:""}</span></div>
+            <div class="two" style="margin-top:10px">
+              <button class="btn full" id="g-syncnow">Sincronizar ahora</button>
+              <button class="btn full" id="g-disc">Desconectar</button>
+            </div>` : `
+            <div class="note" style="margin-bottom:10px">Crea un código en un dispositivo y ponlo en los demás. Tus tareas se guardan en la nube y en cada dispositivo, así que también funcionan sin internet.</div>
+            <button class="btn pri full" id="g-new">Crear código de sincronización</button>
+            <div style="display:flex;gap:8px;margin-top:10px">
+              <input type="text" id="g-code" placeholder="Ya tengo un código" style="flex:1;min-width:0;border:1px solid var(--line);background:var(--bg);border-radius:10px;padding:10px 12px;outline:none;font-family:ui-monospace,Menlo,Consolas,monospace">
+              <button class="btn" id="g-join">Conectar</button>
+            </div>`}
+        </div>
         <div class="fld"><label>Apariencia</label>
           <div class="chips">${[["system","Automático"],["light","Claro"],["dark","Oscuro"]].map(([v,l])=>`<button class="chip ${theme===v?"on":""}" data-th="${v}">${l}</button>`).join("")}</div>
         </div>
@@ -994,7 +1206,7 @@ function openSettings(){
           <div class="switch"><div class="lbl">Avisos del navegador<small>Para tareas con hora y rutinas con recordatorio. Solo funcionan con MIDPLANER abierto.</small></div><button class="tg ${notif?"on":""}" id="g-notif"></button></div>
         </div>
         <div class="fld"><label>Respaldo</label>
-          <div class="note" style="margin-bottom:10px">Tus tareas se guardan en este navegador y en este dispositivo. Descarga un respaldo de vez en cuando; también te sirve para pasarlas a otra computadora o al celular.</div>
+          <div class="note" style="margin-bottom:10px">Descarga una copia de tus tareas en un archivo, por si acaso.</div>
           <div class="two">
             <button class="btn full" id="g-export">Descargar respaldo</button>
             <button class="btn full" id="g-import">Cargar respaldo</button>
@@ -1011,6 +1223,19 @@ function openSettings(){
       </div>`;
     const q = s => sh.querySelector(s);
     q("#g-close").onclick = ()=>closeSheet();
+    if(sync.code){
+      q("#g-copy").onclick = ()=>{ (navigator.clipboard ? navigator.clipboard.writeText(sync.code) : Promise.reject()).then(()=>toast("Código copiado")).catch(()=>toast("Cópialo manualmente")); };
+      q("#g-syncnow").onclick = async ()=>{ await syncNow(); draw(); toast(sync.status==="ok" ? "Sincronizado" : "No se pudo sincronizar"); };
+      q("#g-disc").onclick = ()=>{
+        if(!confirm("Este dispositivo dejará de sincronizar. Tus tareas se quedan aquí y en la nube. ¿Continuar?")) return;
+        sync.code = ""; localStorage.removeItem(LS_CODE); setSync("off"); draw(); render();
+      };
+    }else{
+      q("#g-new").onclick = ()=>{ connectCode(newCode()); draw(); toast("Código creado. Úsalo también en tu celular"); };
+      q("#g-join").onclick = ()=>{ if(connectCode(q("#g-code").value)){ draw(); toast("Conectado. Juntando tus tareas…"); } };
+      q("#g-code").onkeydown = e=>{ if(e.key==="Enter") q("#g-join").click(); };
+    }
+    sh.querySelectorAll("[data-pu]").forEach(b=>b.onclick=()=>{ if(b.dataset.pu!==profile){ setProfile(b.dataset.pu); openSettings(); } });
     sh.querySelectorAll("[data-th]").forEach(b=>b.onclick=()=>{ localStorage.setItem(LS_THEME,b.dataset.th); applyTheme(); draw(); });
     q("#g-notif").onclick = async ()=>{
       if(localStorage.getItem(LS_NOTIF)==="1"){ localStorage.setItem(LS_NOTIF,"0"); draw(); return; }
@@ -1032,15 +1257,15 @@ function openSettings(){
           const d = JSON.parse(rd.result);
           if(!Array.isArray(d.tasks)) throw new Error();
           if(!confirm(`Este respaldo tiene ${d.tasks.length} tareas y ${(d.routines||[]).length} rutinas. Reemplazará lo que tienes ahora. ¿Continuar?`)) return;
-          db = {tasks:d.tasks, routines:Array.isArray(d.routines)?d.routines:[]};
+          db = {tasks:d.tasks, routines:Array.isArray(d.routines)?d.routines:[], deleted:db.deleted||{}};
           save(); closeSheet(); toast("Respaldo cargado");
         }catch(err){ toast("Ese archivo no es un respaldo de MIDPLANER"); }
       };
       rd.readAsText(f);
     };
     q("#g-wipe").onclick = ()=>{
-      if(!confirm("Se borrarán todas tus tareas y rutinas de este navegador. ¿Seguro?")) return;
-      db = {tasks:[], routines:[]}; save(); closeSheet(); toast("Datos borrados");
+      if(!confirm(sync.code ? "Se borrarán todas tus tareas y rutinas aquí y en tus otros dispositivos sincronizados. ¿Seguro?" : "Se borrarán todas tus tareas y rutinas de este navegador. ¿Seguro?")) return;
+      db = {tasks:[], routines:[], deleted:db.deleted||{}}; save(); closeSheet(); toast("Datos borrados");
     };
   };
   draw();
@@ -1084,6 +1309,7 @@ function notify(title, body){
   }
 }
 function checkReminders(){
+  if(!profile) return;
   const d = today(), now = nowHM();
   dueOn(d).forEach(t=>{
     if(t.time===now && !fired.has(t.id+d+now)){ fired.add(t.id+d+now); notify(t.title, "Tarea de MIDPLANER"); }
@@ -1102,6 +1328,7 @@ document.addEventListener("visibilitychange", ()=>{ if(!document.hidden && !$(".
 /* ---------------- arranque ---------------- */
 applyTheme();
 render();
+if(sync.code && profile) syncNow();
 checkReminders();
 </script>
 </body>
