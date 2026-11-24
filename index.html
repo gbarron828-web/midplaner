@@ -5,2007 +5,1104 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>MIDPLANER</title>
 <meta name="theme-color" content="#3B5BDB">
-<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect width=%22100%22 height=%22100%22 rx=%2222%22 fill=%22%233B5BDB%22/><text x=%2250%22 y=%2268%22 font-size=%2258%22 text-anchor=%22middle%22 fill=%22white%22 font-family=%22Arial%22>M</text></svg>">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect width=%22100%22 height=%22100%22 rx=%2224%22 fill=%22%233B5BDB%22/><path d=%22M30 52l13 13 27-30%22 stroke=%22white%22 stroke-width=%2210%22 fill=%22none%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22/></svg>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<script async src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.116.0/dist/umd/supabase.js" onload="window.dispatchEvent(new Event('supabase-ready'))"></script>
 <style>
-/* ======================================================
-   MIDPLANER — ESTILOS
-   ====================================================== */
+/* =========================================================
+   MIDPLANER v2 — estilos
+   ========================================================= */
 :root{
-  --font: 'Inter', system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
-
-  --bg: #FAFAF9;
-  --bg-elev: #FFFFFF;
-  --bg-sunken: #F1F1EF;
-  --border: #E6E4E0;
-  --text: #1B1D22;
-  --text-dim: #6B6F76;
-  --text-faint: #9498A0;
-
-  --accent: #3B5BDB;
-  --accent-dim: #EEF1FD;
-  --accent-text: #FFFFFF;
-
-  --ok: #1B8A5A;
-  --ok-bg: #E7F6EE;
-  --warn: #B5750B;
-  --warn-bg: #FBF0DD;
-  --danger: #C23B3B;
-  --danger-bg: #FBEAEA;
-  --info: #6741D9;
-  --info-bg: #F0EBFC;
-
-  --prio-alta: #C23B3B;
-  --prio-media: #B5750B;
-  --prio-baja: #1B8A5A;
-
-  --radius: 12px;
-  --radius-sm: 8px;
-  --shadow: 0 1px 2px rgba(20,20,30,.04), 0 6px 20px rgba(20,20,30,.06);
+  --font:'Inter',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;
+  --bg:#F6F6F3;
+  --surface:#FFFFFF;
+  --surface-2:#F0EFEB;
+  --line:#E8E6E1;
+  --text:#17191E;
+  --dim:#676B73;
+  --faint:#A3A6AD;
+  --accent:#3B5BDB;
+  --accent-soft:#ECF0FE;
+  --accent-ink:#FFFFFF;
+  --p3:#DB3E38;   /* alta  */
+  --p2:#E58A0C;   /* media */
+  --p1:#3B7BDB;   /* baja  */
+  --green:#1E9E62;
+  --green-soft:#E5F5ED;
+  --red-soft:#FCEBEA;
+  --work:#7048E8;
+  --work-soft:#F1ECFE;
+  --pers:#0B8599;
+  --pers-soft:#E3F5F7;
+  --radius:14px;
+  --shadow:0 1px 2px rgba(18,20,28,.04),0 8px 28px rgba(18,20,28,.08);
+  --shadow-lg:0 20px 60px rgba(18,20,28,.22);
 }
 :root[data-theme="dark"]{
-  --bg: #15171B;
-  --bg-elev: #1C1F24;
-  --bg-sunken: #101215;
-  --border: #2B2F36;
-  --text: #EDEEF0;
-  --text-dim: #A2A6AD;
-  --text-faint: #6B6F76;
-  --accent: #6E8CFA;
-  --accent-dim: #232A47;
-  --accent-text: #0D1020;
-  --ok-bg: #113023;
-  --warn-bg: #332609;
-  --danger-bg: #391414;
-  --info-bg: #241a3d;
-  --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px rgba(0,0,0,.35);
+  --bg:#121317; --surface:#1A1C21; --surface-2:#22252B; --line:#2A2D34;
+  --text:#ECEDEF; --dim:#A0A4AC; --faint:#686C75;
+  --accent:#7090FF; --accent-soft:#222A47; --accent-ink:#0B0E1A;
+  --green-soft:#13301F; --red-soft:#3A1818; --work-soft:#2A2145; --pers-soft:#10303A;
+  --shadow:0 1px 2px rgba(0,0,0,.4),0 8px 28px rgba(0,0,0,.35);
 }
 @media (prefers-color-scheme: dark){
-  :root:not([data-theme="light"]):not([data-theme="dark"]){
-    --bg: #15171B; --bg-elev:#1C1F24; --bg-sunken:#101215; --border:#2B2F36;
-    --text:#EDEEF0; --text-dim:#A2A6AD; --text-faint:#6B6F76;
-    --accent:#6E8CFA; --accent-dim:#232A47; --accent-text:#0D1020;
-    --ok-bg:#113023; --warn-bg:#332609; --danger-bg:#391414; --info-bg:#241a3d;
-    --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px rgba(0,0,0,.35);
+  :root:not([data-theme="light"]){
+    --bg:#121317; --surface:#1A1C21; --surface-2:#22252B; --line:#2A2D34;
+    --text:#ECEDEF; --dim:#A0A4AC; --faint:#686C75;
+    --accent:#7090FF; --accent-soft:#222A47; --accent-ink:#0B0E1A;
+    --green-soft:#13301F; --red-soft:#3A1818; --work-soft:#2A2145; --pers-soft:#10303A;
+    --shadow:0 1px 2px rgba(0,0,0,.4),0 8px 28px rgba(0,0,0,.35);
   }
 }
 *{box-sizing:border-box;}
 html,body{margin:0;padding:0;}
-body{
-  font-family:var(--font);
-  background:var(--bg);
-  color:var(--text);
-  -webkit-font-smoothing:antialiased;
-  overscroll-behavior-y:none;
-}
-button{font-family:inherit;}
-input,select,textarea{font-family:inherit;font-size:15px;}
-a{color:var(--accent);text-decoration:none;}
-::selection{background:var(--accent-dim);}
+body{font-family:var(--font);background:var(--bg);color:var(--text);-webkit-font-smoothing:antialiased;font-size:15px;line-height:1.4;}
+button{font-family:inherit;font-size:inherit;color:inherit;cursor:pointer;}
+input,textarea,select{font-family:inherit;font-size:15px;color:var(--text);}
+svg.i{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;flex:0 0 auto;}
+svg.i.sm{width:14px;height:14px;stroke-width:2;}
+::selection{background:var(--accent-soft);}
 
-/* ---------- layout shell ---------- */
+/* ---------- layout ---------- */
 #app{display:flex;min-height:100vh;}
 #sidebar{
-  width:230px;flex:0 0 230px;background:var(--bg-elev);border-right:1px solid var(--border);
-  display:flex;flex-direction:column;padding:18px 12px;gap:2px;position:sticky;top:0;height:100vh;
+  width:248px;flex:0 0 248px;position:sticky;top:0;height:100vh;
+  padding:22px 14px;display:flex;flex-direction:column;gap:2px;
+  border-right:1px solid var(--line);background:var(--surface);
 }
-#sidebar .brand{display:flex;align-items:center;gap:10px;padding:6px 10px 18px;}
-#sidebar .brand .logo{width:30px;height:30px;border-radius:9px;background:var(--accent);color:var(--accent-text);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:15px;flex:0 0 auto;}
-#sidebar .brand .name{font-weight:800;font-size:17px;letter-spacing:.2px;}
-.nav-item{
-  display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:var(--radius-sm);
-  color:var(--text-dim);cursor:pointer;font-size:14.5px;font-weight:500;user-select:none;position:relative;
-}
-.nav-item:hover{background:var(--bg-sunken);color:var(--text);}
-.nav-item.active{background:var(--accent-dim);color:var(--accent);font-weight:600;}
-.nav-item .ic{width:20px;text-align:center;font-size:16px;}
-.nav-item .badge{margin-left:auto;font-size:11px;background:var(--danger);color:#fff;border-radius:20px;padding:1px 6px;font-weight:700;}
-#sidebar .foot{margin-top:auto;padding:10px 12px;border-top:1px solid var(--border);}
-#sidebar .sync-pill{display:flex;align-items:center;gap:8px;font-size:12.5px;color:var(--text-dim);padding:6px 0;}
-#sidebar .dot{width:8px;height:8px;border-radius:50%;flex:0 0 auto;}
-#sidebar .user-row{display:flex;align-items:center;gap:8px;margin-top:6px;font-size:13px;color:var(--text-dim);}
-#sidebar .user-row button{background:none;border:none;color:var(--text-faint);cursor:pointer;font-size:12px;padding:2px;}
-#sidebar .user-row button:hover{color:var(--danger);}
+.brand{display:flex;align-items:center;gap:10px;padding:2px 10px 22px;}
+.brand .logo{width:32px;height:32px;border-radius:10px;background:var(--accent);display:flex;align-items:center;justify-content:center;color:#fff;}
+.brand .logo svg{width:18px;height:18px;stroke-width:2.6;}
+.brand b{font-size:16px;font-weight:800;letter-spacing:.6px;}
+.nav{display:flex;align-items:center;gap:12px;padding:9px 12px;border-radius:10px;border:none;background:none;width:100%;text-align:left;color:var(--dim);font-weight:500;font-size:14.5px;}
+.nav:hover{background:var(--surface-2);color:var(--text);}
+.nav.on{background:var(--accent-soft);color:var(--accent);font-weight:600;}
+.nav .n{margin-left:auto;font-size:12px;color:var(--faint);font-weight:600;}
+.nav.on .n{color:var(--accent);}
+.nav .n.late{color:var(--p3);}
+.side-foot{margin-top:auto;border-top:1px solid var(--line);padding-top:10px;}
+.side-foot .store{font-size:11.5px;color:var(--faint);padding:8px 12px 0;line-height:1.5;}
 
-#main{flex:1;min-width:0;padding:26px 34px 90px;max-width:980px;}
-#main.wide{max-width:none;}
+#main{flex:1;min-width:0;display:flex;justify-content:center;}
+#page{width:100%;max-width:720px;padding:34px 32px 120px;}
 
-.topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;gap:10px;}
-.topbar h1{font-size:22px;margin:0;font-weight:700;}
-.topbar .sub{color:var(--text-dim);font-size:13.5px;margin-top:2px;}
-.top-actions{display:flex;gap:8px;align-items:center;}
+.head{display:flex;align-items:flex-end;justify-content:space-between;gap:12px;margin-bottom:18px;}
+.head h1{margin:0;font-size:30px;font-weight:800;letter-spacing:-.6px;}
+.head .subtitle{color:var(--dim);font-size:14px;margin-top:4px;}
+.head-btns{display:flex;gap:4px;}
+.icon-btn{width:38px;height:38px;border-radius:10px;border:none;background:none;color:var(--dim);display:flex;align-items:center;justify-content:center;}
+.icon-btn:hover{background:var(--surface-2);color:var(--text);}
+.only-mobile{display:none!important;}
 
-/* mobile bottom nav */
-#bottomnav{display:none;}
-#fab{
-  display:none;position:fixed;right:18px;bottom:78px;width:56px;height:56px;border-radius:50%;
-  background:var(--accent);color:var(--accent-text);border:none;font-size:26px;box-shadow:var(--shadow);
-  z-index:40;cursor:pointer;align-items:center;justify-content:center;
-}
-#fab-desktop{display:flex;}
+#tabbar{display:none;}
+#fab{display:none;}
 
-@media (max-width: 900px){
+@media (max-width: 860px){
   #sidebar{display:none;}
-  #main{padding:16px 14px 90px;max-width:100%;}
-  #bottomnav{
-    display:flex;position:fixed;left:0;right:0;bottom:0;height:62px;background:var(--bg-elev);
-    border-top:1px solid var(--border);z-index:30;padding-bottom:env(safe-area-inset-bottom);
+  #page{padding:18px 16px 130px;}
+  .head h1{font-size:27px;}
+  .only-mobile{display:flex!important;}
+  #tabbar{
+    display:flex;position:fixed;left:0;right:0;bottom:0;z-index:40;
+    background:color-mix(in srgb,var(--surface) 92%,transparent);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+    border-top:1px solid var(--line);padding:6px 4px calc(6px + env(safe-area-inset-bottom));
   }
-  #bottomnav .bn-item{
-    flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;
-    color:var(--text-faint);font-size:10.5px;cursor:pointer;position:relative;
+  .tab{flex:1;border:none;background:none;display:flex;flex-direction:column;align-items:center;gap:3px;padding:6px 0;color:var(--faint);font-size:10.5px;font-weight:600;position:relative;}
+  .tab.on{color:var(--accent);}
+  .tab .dot{position:absolute;top:3px;left:calc(50% + 8px);min-width:16px;height:16px;border-radius:8px;background:var(--p3);color:#fff;font-size:10px;display:flex;align-items:center;justify-content:center;padding:0 4px;}
+  #fab{
+    display:flex;position:fixed;right:18px;bottom:calc(78px + env(safe-area-inset-bottom));z-index:41;
+    width:56px;height:56px;border-radius:18px;border:none;background:var(--accent);color:#fff;
+    align-items:center;justify-content:center;box-shadow:0 10px 26px rgba(59,91,219,.38);
   }
-  #bottomnav .bn-item.active{color:var(--accent);}
-  #bottomnav .bn-item .ic{font-size:19px;}
-  #fab{display:flex;}
-  #fab-desktop{display:none;}
+  #fab svg{width:26px;height:26px;stroke-width:2.4;}
 }
 
-/* ---------- generic ui ---------- */
-.card{background:var(--bg-elev);border:1px solid var(--border);border-radius:var(--radius);padding:16px;}
-.section{margin-bottom:26px;}
-.section-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;}
-.section-head h2{font-size:14.5px;margin:0;font-weight:700;color:var(--text-dim);text-transform:uppercase;letter-spacing:.4px;}
-.section-head h2 .cnt{color:var(--text-faint);font-weight:500;margin-left:4px;text-transform:none;letter-spacing:0;}
-.list{display:flex;flex-direction:column;gap:8px;}
-.empty{color:var(--text-faint);font-size:13.5px;padding:18px 4px;text-align:center;background:var(--bg-sunken);border-radius:var(--radius);}
+/* ---------- quick add ---------- */
+.qa{display:flex;align-items:center;gap:10px;background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:6px 6px 6px 14px;box-shadow:var(--shadow);transition:border-color .15s;}
+.qa:focus-within{border-color:var(--accent);}
+.qa .plus{color:var(--accent);display:flex;}
+.qa input{flex:1;min-width:0;border:none;outline:none;background:none;padding:10px 0;font-size:15.5px;}
+.qa input::placeholder{color:var(--faint);}
+.qa button{border:none;background:var(--accent);color:#fff;font-weight:600;font-size:13.5px;border-radius:10px;padding:9px 14px;}
+.qa button:disabled{opacity:.35;cursor:default;}
+.qa-prev{display:flex;flex-wrap:wrap;gap:6px;align-items:center;min-height:30px;padding:8px 4px 0;}
+.qa-hint{font-size:12px;color:var(--faint);}
+.qa-hint code{background:var(--surface-2);border-radius:5px;padding:1px 5px;font-size:11.5px;color:var(--dim);font-family:inherit;}
+.wrap-qa{margin-bottom:22px;}
 
-.item-row{
-  display:flex;align-items:flex-start;gap:10px;background:var(--bg-elev);border:1px solid var(--border);
-  border-radius:var(--radius);padding:12px 12px;cursor:pointer;transition:border-color .12s;
+/* ---------- chips ---------- */
+.pill{display:inline-flex;align-items:center;gap:4px;font-size:12px;font-weight:600;padding:3px 9px;border-radius:999px;background:var(--surface-2);color:var(--dim);white-space:nowrap;}
+.pill.date{background:var(--accent-soft);color:var(--accent);}
+.pill.late{background:var(--red-soft);color:var(--p3);}
+.pill.today{background:var(--green-soft);color:var(--green);}
+.pill.p3{background:var(--red-soft);color:var(--p3);}
+.pill.p2{background:color-mix(in srgb,var(--p2) 14%,transparent);color:var(--p2);}
+.pill.p1{background:color-mix(in srgb,var(--p1) 14%,transparent);color:var(--p1);}
+.pill.trabajo{background:var(--work-soft);color:var(--work);}
+.pill.personal{background:var(--pers-soft);color:var(--pers);}
+.pill button{border:none;background:none;padding:0;margin-left:2px;display:flex;color:inherit;opacity:.7;}
+
+.chips{display:flex;flex-wrap:wrap;gap:6px;}
+.chip{border:1px solid var(--line);background:var(--surface);color:var(--dim);font-size:13px;font-weight:600;border-radius:999px;padding:7px 13px;}
+.chip:hover{border-color:var(--faint);color:var(--text);}
+.chip.on{background:var(--text);border-color:var(--text);color:var(--bg);}
+
+/* ---------- sections & rows ---------- */
+.sec{margin-bottom:26px;}
+.sec-h{display:flex;align-items:center;justify-content:space-between;margin:0 4px 8px;}
+.sec-h h2{margin:0;font-size:13px;font-weight:700;color:var(--dim);text-transform:uppercase;letter-spacing:.6px;display:flex;align-items:center;gap:8px;}
+.sec-h h2 .c{color:var(--faint);font-weight:600;}
+.sec-h h2.late{color:var(--p3);}
+.link{border:none;background:none;color:var(--accent);font-weight:600;font-size:13px;padding:4px 6px;border-radius:6px;}
+.link:hover{background:var(--accent-soft);}
+.group{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;}
+
+.row{display:flex;align-items:flex-start;gap:12px;padding:12px 14px;border-top:1px solid var(--line);transition:opacity .35s, background .15s;}
+.row:first-child{border-top:none;}
+.row:hover{background:color-mix(in srgb,var(--surface-2) 55%,var(--surface));}
+.row .body{flex:1;min-width:0;cursor:pointer;}
+.row .t{font-size:15px;font-weight:500;line-height:1.35;word-wrap:break-word;}
+.row .m{display:flex;flex-wrap:wrap;gap:5px;margin-top:6px;}
+.row .m:empty{display:none;}
+.row.done .t{color:var(--faint);text-decoration:line-through;}
+.row.leaving{opacity:0;}
+
+.chk{
+  width:22px;height:22px;flex:0 0 22px;margin-top:1px;border-radius:50%;
+  border:2px solid var(--faint);background:none;padding:0;display:flex;align-items:center;justify-content:center;color:transparent;
+  transition:transform .15s, background .2s, border-color .2s;
 }
-.item-row:hover{border-color:var(--accent);}
-.item-row .check{
-  width:20px;height:20px;border-radius:50%;border:2px solid var(--border);flex:0 0 auto;margin-top:1px;
-  cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:11px;color:transparent;
+.chk svg{width:12px;height:12px;stroke-width:3.2;}
+.chk:hover{color:var(--faint);}
+.chk.p3{border-color:var(--p3);background:color-mix(in srgb,var(--p3) 10%,transparent);}
+.chk.p2{border-color:var(--p2);background:color-mix(in srgb,var(--p2) 10%,transparent);}
+.chk.p1{border-color:var(--p1);background:color-mix(in srgb,var(--p1) 10%,transparent);}
+.chk.p3:hover{color:var(--p3);} .chk.p2:hover{color:var(--p2);} .chk.p1:hover{color:var(--p1);}
+.chk.on{background:var(--green)!important;border-color:var(--green)!important;color:#fff!important;}
+.chk.pop{animation:pop .35s ease;}
+.chk.rt{border-radius:7px;}
+@keyframes pop{0%{transform:scale(1);}40%{transform:scale(1.28);}100%{transform:scale(1);}}
+
+.empty{padding:28px 18px;text-align:center;color:var(--faint);font-size:14px;}
+.empty .big{font-size:30px;margin-bottom:6px;}
+.empty b{display:block;color:var(--dim);font-size:15px;margin-bottom:2px;}
+
+.day-h{display:flex;align-items:baseline;gap:8px;margin:0 4px 8px;}
+.day-h b{font-size:15px;font-weight:700;}
+.day-h span{font-size:13px;color:var(--faint);}
+.day-h .link{margin-left:auto;}
+.day-empty{padding:11px 14px;color:var(--faint);font-size:13.5px;}
+
+/* ---------- hero (hoy) ---------- */
+.hero{display:flex;align-items:center;gap:16px;background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:16px 18px;margin-bottom:22px;}
+.ring{position:relative;width:58px;height:58px;flex:0 0 58px;}
+.ring svg{width:58px;height:58px;transform:rotate(-90deg);}
+.ring circle{fill:none;stroke-width:6;}
+.ring .bg{stroke:var(--surface-2);}
+.ring .fg{stroke:var(--green);stroke-linecap:round;transition:stroke-dashoffset .5s ease;}
+.ring .pct{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;}
+.hero .h1{font-size:16px;font-weight:700;}
+.hero .h2{font-size:13.5px;color:var(--dim);margin-top:2px;}
+
+.search{display:flex;align-items:center;gap:8px;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:0 12px;margin-bottom:12px;color:var(--faint);}
+.search:focus-within{border-color:var(--accent);}
+.search input{flex:1;border:none;outline:none;background:none;padding:11px 0;}
+.filters{margin-bottom:20px;}
+
+.streak{font-size:12px;font-weight:700;color:var(--p2);}
+
+.btn{border:1px solid var(--line);background:var(--surface);border-radius:10px;padding:9px 15px;font-weight:600;font-size:13.5px;display:inline-flex;align-items:center;gap:7px;}
+.btn:hover{border-color:var(--faint);}
+.btn.pri{background:var(--accent);border-color:var(--accent);color:#fff;}
+.btn.pri:hover{opacity:.92;}
+.btn.danger{color:var(--p3);}
+.btn.danger:hover{border-color:var(--p3);}
+.btn.full{width:100%;justify-content:center;}
+
+/* ---------- sheet (modal) ---------- */
+.overlay{position:fixed;inset:0;z-index:100;background:rgba(12,13,18,.42);display:flex;align-items:center;justify-content:center;padding:20px;animation:fade .15s ease;}
+.sheet{background:var(--surface);width:100%;max-width:520px;max-height:90vh;overflow:auto;border-radius:20px;box-shadow:var(--shadow-lg);animation:up .2s ease;}
+@media (max-width:640px){
+  .overlay{align-items:flex-end;padding:0;}
+  .sheet{border-radius:22px 22px 0 0;max-height:92vh;padding-bottom:env(safe-area-inset-bottom);}
 }
-.item-row .check:hover{border-color:var(--accent);}
-.item-row .check.done{background:var(--ok);border-color:var(--ok);color:#fff;}
-.item-row .body{flex:1;min-width:0;}
-.item-row .title{font-size:14.5px;font-weight:600;line-height:1.35;}
-.item-row .title.done{text-decoration:line-through;color:var(--text-faint);font-weight:500;}
-.item-row .meta{display:flex;gap:6px;flex-wrap:wrap;margin-top:5px;}
-.tag{font-size:11px;padding:2px 8px;border-radius:20px;font-weight:600;white-space:nowrap;}
-.tag.prio-alta{background:var(--danger-bg);color:var(--prio-alta);}
-.tag.prio-media{background:var(--warn-bg);color:var(--prio-media);}
-.tag.prio-baja{background:var(--ok-bg);color:var(--prio-baja);}
-.tag.cat-trabajo{background:var(--info-bg);color:var(--info);}
-.tag.cat-personal{background:var(--accent-dim);color:var(--accent);}
-.tag.muted{background:var(--bg-sunken);color:var(--text-dim);}
-.tag.overdue{background:var(--danger-bg);color:var(--danger);}
-.item-row .chev{color:var(--text-faint);font-size:13px;margin-top:2px;}
-
-.btn{
-  border:1px solid var(--border);background:var(--bg-elev);color:var(--text);border-radius:var(--radius-sm);
-  padding:8px 14px;font-size:13.5px;font-weight:600;cursor:pointer;display:inline-flex;align-items:center;gap:6px;
+@keyframes fade{from{opacity:0;}}
+@keyframes up{from{transform:translateY(24px);opacity:0;}}
+.sh-top{display:flex;align-items:center;gap:10px;padding:18px 18px 6px;}
+.sh-top input.title{flex:1;border:none;outline:none;background:none;font-size:20px;font-weight:700;padding:4px 0;}
+.sh-top h3{flex:1;margin:0;font-size:18px;font-weight:700;}
+.sh-body{padding:6px 18px 8px;}
+.fld{margin:16px 0;}
+.fld > label{display:flex;align-items:center;gap:6px;font-size:12px;font-weight:700;color:var(--faint);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px;}
+.fld input[type=text],.fld input[type=date],.fld input[type=time],.fld textarea{
+  width:100%;border:1px solid var(--line);background:var(--bg);border-radius:10px;padding:10px 12px;outline:none;
 }
-.btn:hover{border-color:var(--accent);color:var(--accent);}
-.btn.primary{background:var(--accent);color:var(--accent-text);border-color:var(--accent);}
-.btn.primary:hover{opacity:.92;color:var(--accent-text);}
-.btn.danger:hover{border-color:var(--danger);color:var(--danger);}
-.btn.ghost{background:none;border:none;}
-.btn.sm{padding:5px 10px;font-size:12.5px;}
-.btn.icon{padding:8px;}
-.btn[disabled]{opacity:.5;cursor:default;}
+.fld input:focus,.fld textarea:focus{border-color:var(--accent);}
+.fld textarea{min-height:80px;resize:vertical;line-height:1.5;}
+.two{display:flex;gap:10px;}
+.two > *{flex:1;min-width:0;}
+.sh-foot{display:flex;align-items:center;gap:8px;padding:14px 18px 18px;border-top:1px solid var(--line);position:sticky;bottom:0;background:var(--surface);}
+.sh-foot .sp{flex:1;}
 
-.field{margin-bottom:14px;}
-.field label{display:block;font-size:12.5px;font-weight:600;color:var(--text-dim);margin-bottom:5px;}
-.field input, .field select, .field textarea{
-  width:100%;padding:10px 12px;border:1px solid var(--border);border-radius:var(--radius-sm);
-  background:var(--bg);color:var(--text);outline:none;
-}
-.field input:focus, .field select:focus, .field textarea:focus{border-color:var(--accent);}
-.field textarea{resize:vertical;min-height:64px;}
-.field-row{display:flex;gap:10px;}
-.field-row .field{flex:1;}
-.chip-group{display:flex;gap:6px;flex-wrap:wrap;}
-.chip{
-  padding:7px 13px;border-radius:20px;border:1px solid var(--border);font-size:12.5px;font-weight:600;
-  cursor:pointer;color:var(--text-dim);background:var(--bg-elev);
-}
-.chip.active{background:var(--accent);border-color:var(--accent);color:var(--accent-text);}
-.days-picker{display:flex;gap:5px;}
-.day-chip{width:36px;height:36px;border-radius:50%;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;cursor:pointer;color:var(--text-dim);}
-.day-chip.active{background:var(--accent);border-color:var(--accent);color:var(--accent-text);}
+.subs{border:1px solid var(--line);border-radius:12px;overflow:hidden;}
+.sub{display:flex;align-items:center;gap:10px;padding:9px 12px;border-top:1px solid var(--line);}
+.sub:first-child{border-top:none;}
+.sub .chk{width:18px;height:18px;flex-basis:18px;margin:0;}
+.sub span{flex:1;font-size:14px;}
+.sub.d span{text-decoration:line-through;color:var(--faint);}
+.sub .x{border:none;background:none;color:var(--faint);display:flex;padding:2px;}
+.sub .x:hover{color:var(--p3);}
+.sub input{flex:1;border:none;outline:none;background:none;padding:2px 0;font-size:14px;}
 
-/* modal / sheet */
-.overlay{position:fixed;inset:0;background:rgba(10,10,15,.45);display:flex;align-items:flex-end;justify-content:center;z-index:100;backdrop-filter:blur(1px);}
-@media(min-width:640px){.overlay{align-items:center;}}
-.sheet{
-  background:var(--bg-elev);width:100%;max-width:480px;border-radius:18px 18px 0 0;max-height:92vh;overflow-y:auto;
-  padding:18px 18px calc(18px + env(safe-area-inset-bottom));box-shadow:var(--shadow);
-}
-@media(min-width:640px){.sheet{border-radius:16px;margin:20px;}}
-.sheet-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;}
-.sheet-head h3{margin:0;font-size:17px;font-weight:700;}
-.sheet-head .x{cursor:pointer;color:var(--text-faint);font-size:20px;padding:2px 6px;}
-.sheet-actions{display:flex;gap:8px;justify-content:flex-end;margin-top:16px;border-top:1px solid var(--border);padding-top:14px;}
+.days{display:flex;gap:6px;}
+.dchip{width:38px;height:38px;border-radius:50%;border:1px solid var(--line);background:var(--surface);font-weight:700;font-size:13px;color:var(--dim);}
+.dchip.on{background:var(--accent);border-color:var(--accent);color:#fff;}
 
-.quick-opts{display:flex;flex-direction:column;gap:6px;}
-.quick-opt{display:flex;align-items:center;gap:12px;padding:13px 10px;border-radius:var(--radius-sm);cursor:pointer;font-size:15px;font-weight:600;}
-.quick-opt:hover{background:var(--bg-sunken);}
-.quick-opt .ic{width:26px;text-align:center;font-size:18px;}
+.switch{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 0;border-top:1px solid var(--line);}
+.switch:first-child{border-top:none;}
+.switch .lbl{font-size:14.5px;font-weight:500;}
+.switch .lbl small{display:block;color:var(--faint);font-size:12.5px;font-weight:400;margin-top:2px;}
+.tg{width:44px;height:26px;border-radius:13px;border:none;background:var(--line);position:relative;flex:0 0 44px;transition:background .2s;}
+.tg::after{content:"";position:absolute;top:3px;left:3px;width:20px;height:20px;border-radius:50%;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.25);transition:left .2s;}
+.tg.on{background:var(--green);}
+.tg.on::after{left:21px;}
 
-/* toast */
-#toast-wrap{position:fixed;top:16px;right:16px;z-index:200;display:flex;flex-direction:column;gap:8px;max-width:320px;}
-@media(max-width:900px){#toast-wrap{top:auto;bottom:80px;right:12px;left:12px;max-width:none;}}
-.toast{background:var(--bg-elev);border:1px solid var(--border);box-shadow:var(--shadow);border-radius:var(--radius-sm);padding:12px 14px;font-size:13.5px;display:flex;gap:10px;align-items:flex-start;animation:tin .15s ease;}
-.toast.ok{border-left:3px solid var(--ok);}
-.toast.err{border-left:3px solid var(--danger);}
-.toast.info{border-left:3px solid var(--info);}
-@keyframes tin{from{opacity:0;transform:translateY(-6px);}to{opacity:1;transform:none;}}
+.note{font-size:12.5px;color:var(--dim);background:var(--surface-2);border-radius:10px;padding:10px 12px;line-height:1.5;}
 
-/* login */
-#auth-screen{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px;background:var(--bg);}
-.auth-box{width:100%;max-width:380px;}
-.auth-box .brand{display:flex;align-items:center;gap:10px;justify-content:center;margin-bottom:22px;}
-.auth-box .brand .logo{width:38px;height:38px;border-radius:11px;background:var(--accent);color:var(--accent-text);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:19px;}
-.auth-box .brand .name{font-weight:800;font-size:21px;}
-.auth-tabs{display:flex;gap:4px;background:var(--bg-sunken);border-radius:var(--radius-sm);padding:3px;margin-bottom:18px;}
-.auth-tabs button{flex:1;border:none;background:none;padding:9px;border-radius:7px;font-weight:600;font-size:13.5px;color:var(--text-dim);cursor:pointer;}
-.auth-tabs button.active{background:var(--bg-elev);color:var(--text);box-shadow:0 1px 2px rgba(0,0,0,.06);}
-.hint{font-size:12px;color:var(--text-faint);margin-top:6px;line-height:1.5;}
-
-/* config screen (missing supabase config) */
-#setup-screen{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px;}
-.setup-box{max-width:520px;width:100%;}
-
-/* loading */
-#boot-loading{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:var(--bg);z-index:500;color:var(--text-dim);font-size:14px;}
-
-/* today greeting */
-.hero{margin-bottom:22px;}
-.hero .greet{font-size:23px;font-weight:800;}
-.hero .date{color:var(--text-dim);font-size:13.5px;margin-top:2px;text-transform:capitalize;}
-
-/* control center stat grid */
-.stat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;}
-.stat-card{background:var(--bg-elev);border:1px solid var(--border);border-radius:var(--radius);padding:14px;}
-.stat-card .n{font-size:24px;font-weight:800;}
-.stat-card .l{font-size:12px;color:var(--text-dim);margin-top:2px;}
-.bar-track{height:8px;border-radius:8px;background:var(--bg-sunken);overflow:hidden;margin-top:8px;}
-.bar-fill{height:100%;background:var(--accent);border-radius:8px;}
-
-/* calendar */
-.cal-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;}
-.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;}
-.cal-dow{text-align:center;font-size:11px;color:var(--text-faint);font-weight:700;padding-bottom:4px;}
-.cal-day{aspect-ratio:1;border-radius:8px;border:1px solid var(--border);display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:12.5px;cursor:pointer;position:relative;background:var(--bg-elev);}
-.cal-day.other{opacity:.32;}
-.cal-day.today{border-color:var(--accent);color:var(--accent);font-weight:800;}
-.cal-day.selected{background:var(--accent);color:var(--accent-text);}
-.cal-day .dots{display:flex;gap:2px;margin-top:3px;}
-.cal-day .dots span{width:4px;height:4px;border-radius:50%;background:var(--accent);}
-.cal-day.selected .dots span{background:var(--accent-text);}
-
-/* progress bar in projects */
-.proj-row .bar-track{margin-top:8px;}
-
-/* search overlay */
-#search-overlay{position:fixed;inset:0;background:var(--bg);z-index:150;display:flex;flex-direction:column;padding:14px;}
-#search-overlay input{font-size:17px;border:none;border-bottom:2px solid var(--border);padding:10px 4px;background:none;color:var(--text);outline:none;}
-#search-overlay input:focus{border-color:var(--accent);}
-#search-results{margin-top:14px;overflow-y:auto;flex:1;}
-
-.sync-badge{display:inline-flex;align-items:center;gap:6px;font-size:12px;color:var(--text-dim);}
-.sync-badge .dot{width:7px;height:7px;border-radius:50%;}
-
-textarea, input[type=text], input[type=date], input[type=time], input[type=email], input[type=password]{-webkit-appearance:none;}
-
-.mono{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:12px;background:var(--bg-sunken);padding:12px;border-radius:8px;white-space:pre-wrap;word-break:break-word;max-height:340px;overflow:auto;display:block;}
-.steps-list{display:flex;flex-direction:column;gap:10px;}
-.step-num{display:flex;gap:12px;align-items:flex-start;}
-.step-num .n{width:24px;height:24px;border-radius:50%;background:var(--accent-dim);color:var(--accent);font-weight:700;font-size:12.5px;display:flex;align-items:center;justify-content:center;flex:0 0 auto;}
-.step-num .t{font-size:13.5px;line-height:1.5;padding-top:2px;}
-
-hr.sep{border:none;border-top:1px solid var(--border);margin:18px 0;}
-.inline-note{font-size:12.5px;color:var(--text-faint);background:var(--bg-sunken);border-radius:8px;padding:10px 12px;line-height:1.5;}
+/* ---------- toast ---------- */
+#toasts{position:fixed;left:50%;transform:translateX(-50%);bottom:28px;z-index:200;display:flex;flex-direction:column;gap:8px;align-items:center;pointer-events:none;}
+@media (max-width:860px){#toasts{bottom:calc(150px + env(safe-area-inset-bottom));}}
+.toast{pointer-events:auto;display:flex;align-items:center;gap:14px;background:#1D2026;color:#F2F3F5;border-radius:12px;padding:11px 14px 11px 16px;font-size:14px;box-shadow:0 10px 30px rgba(0,0,0,.25);animation:up .18s ease;max-width:92vw;}
+.toast button{border:none;background:none;color:#9DB2FF;font-weight:700;font-size:13.5px;padding:2px 4px;}
 </style>
 </head>
 <body>
-
-<div id="boot-loading">Cargando MIDPLANER…</div>
-<div id="toast-wrap"></div>
-<div id="root" style="display:none;"></div>
+<div id="app">
+  <aside id="sidebar"></aside>
+  <main id="main"><div id="page"></div></main>
+</div>
+<nav id="tabbar"></nav>
+<button id="fab" aria-label="Agregar"></button>
+<div id="toasts"></div>
 
 <script>
-/* ============================================================
-   MIDPLANER — single file app
-   Secciones: CONFIGURACIÓN · SUPABASE · AUTH · ESTADO · TAREAS
-   RUTINAS · PROYECTOS · ESPERANDO · IDEAS · INBOX · UI ·
-   SINCRONIZACIÓN · OFFLINE · NOTIFICACIONES · CALENDARIO · SQL
-   ============================================================ */
+/* =========================================================
+   MIDPLANER v2
+   - Sin inicio de sesión: los datos viven en este navegador (localStorage).
+   - Vistas: Hoy · Próximos · Todas · Rutinas · Hechas
+   - Captura rápida con lenguaje natural en español.
+   ========================================================= */
 
-/* ================= CONFIGURACIÓN ================= */
-// Coloca aquí tu Project URL y tu clave Publishable/Anon si prefieres
-// dejarlas fijas en el archivo. Si las dejas vacías, MIDPLANER te
-// pedirá que las introduzcas y las guardará en este navegador
-// (localStorage), sin modificar este archivo.
-const SUPABASE_URL = "https://mtktdrmxervwqtespdhk.supabase.co";
-const SUPABASE_ANON_KEY = ""; // Publishable Key (sb_publishable_...) o Anon key antigua (eyJ...). También puede configurarse en pantalla.
-function normalizeSupabaseKey(key){
-  return String(key || "").trim().replace(/^['"]|['"]$/g, "").trim();
-}
-function validateSupabaseConfig(url, key){
-  const cleanUrl = String(url || "").trim().replace(/\/+$/, "");
-  const cleanKey = normalizeSupabaseKey(key);
-  if(!/^https:\/\/[^\s/]+\.supabase\.co$/i.test(cleanUrl)) return {ok:false, message:"Project URL no válida. Debe ser https://TU-PROYECTO.supabase.co"};
-  if(!cleanKey || cleanKey.includes("...")) return {ok:false, message:"Falta la clave Publishable/Anon completa."};
-  if(!(cleanKey.startsWith("sb_publishable_") || cleanKey.startsWith("eyJ"))) return {ok:false, message:"La clave debe comenzar con sb_publishable_ o eyJ."};
-  return {ok:true, url:cleanUrl, key:cleanKey};
-}
+/* ---------------- almacenamiento ---------------- */
+const LS_DATA = "midplaner_v2";
+const LS_THEME = "midplaner_theme";
+const LS_NOTIF = "midplaner_notif";
 
-const TIMEZONE = "America/Mexico_City";
-const LS_CONFIG = "midplanner_config";
-const LS_CACHE_PREFIX = "midplanner_cache_";
-const LS_QUEUE = "midplanner_queue";
-const LS_THEME = "midplanner_theme";
-const LS_NOTIF = "midplanner_notif_enabled";
-const LS_NOTIF_ROUTINES = "midplanner_notif_routines"; // map routine_id -> bool
+let db = loadDb();
+function loadDb(){
+  try{
+    const d = JSON.parse(localStorage.getItem(LS_DATA));
+    if(d && Array.isArray(d.tasks)) return {tasks:d.tasks, routines:Array.isArray(d.routines)?d.routines:[]};
+  }catch(e){}
+  return {tasks:[], routines:[]};
+}
+function save(){
+  try{ localStorage.setItem(LS_DATA, JSON.stringify(db)); }
+  catch(e){ toast("No se pudo guardar en este navegador"); }
+}
+// Si tienes MIDPLANER abierto en dos pestañas, se mantienen iguales.
+window.addEventListener("storage", e=>{ if(e.key===LS_DATA){ db = loadDb(); render(); } });
 
-function getEffectiveConfig(){
-  let stored = {};
-  try{ stored = JSON.parse(localStorage.getItem(LS_CONFIG) || "{}"); }catch(e){}
-  return {
-    url: String(stored.url || SUPABASE_URL || "").trim().replace(/\/+$/, ""),
-    key: normalizeSupabaseKey(stored.key || SUPABASE_ANON_KEY || "")
-  };
-}
-function saveConfig(url, key){
-  const clean = validateSupabaseConfig(url, key);
-  if(!clean.ok) return clean;
-  localStorage.setItem(LS_CONFIG, JSON.stringify({url:clean.url, key:clean.key}));
-  return clean;
-}
+/* ---------------- utilidades ---------------- */
+const $ = s => document.querySelector(s);
+function esc(s){ return String(s==null?"":s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c])); }
+function uid(){ return (crypto.randomUUID ? crypto.randomUUID() : Date.now().toString(36)+Math.random().toString(36).slice(2)); }
+const pad = n => String(n).padStart(2,"0");
+function iso(d){ return d.getFullYear()+"-"+pad(d.getMonth()+1)+"-"+pad(d.getDate()); }
+function today(){ return iso(new Date()); }
+function parseD(s){ const [y,m,d]=s.split("-").map(Number); return new Date(y,m-1,d); }
+function addDays(s,n){ const d=parseD(s); d.setDate(d.getDate()+n); return iso(d); }
+function diffDays(a,b){ return Math.round((parseD(b)-parseD(a))/86400000); }
+function nowHM(){ const d=new Date(); return pad(d.getHours())+":"+pad(d.getMinutes()); }
+const DOW_FULL = ["domingo","lunes","martes","miércoles","jueves","viernes","sábado"];
+const DOW_SHORT = ["D","L","M","M","J","V","S"];
 
-/* ================= FECHAS (zona horaria local, sin desliz UTC) ================= */
-function pad2(n){ return String(n).padStart(2,"0"); }
-function fmtDateISO(d){ // yyyy-mm-dd usando componentes LOCALES del navegador
-  return d.getFullYear()+"-"+pad2(d.getMonth()+1)+"-"+pad2(d.getDate());
+function dayLabel(s){
+  if(!s) return "";
+  const n = diffDays(today(), s);
+  if(n===0) return "Hoy";
+  if(n===1) return "Mañana";
+  if(n===-1) return "Ayer";
+  const d = parseD(s);
+  if(n>1 && n<7) return cap(DOW_FULL[d.getDay()]);
+  const opts = {weekday:"short", day:"numeric", month:"short"};
+  if(d.getFullYear()!==new Date().getFullYear()) opts.year = "numeric";
+  return d.toLocaleDateString("es-MX", opts).replace(/\./g,"");
 }
-function todayStr(){ return fmtDateISO(new Date()); }
-function nowTimeStr(){ const d=new Date(); return pad2(d.getHours())+":"+pad2(d.getMinutes()); }
-function parseDateLocal(str){ // "yyyy-mm-dd" -> Date a medianoche LOCAL
-  if(!str) return null;
-  const [y,m,d] = str.split("-").map(Number);
-  return new Date(y, m-1, d);
+function longDate(s){ return parseD(s).toLocaleDateString("es-MX",{weekday:"long",day:"numeric",month:"long"}); }
+function cap(s){ return s.charAt(0).toUpperCase()+s.slice(1); }
+function fmtTime(t){
+  if(!t) return "";
+  let [h,m] = t.split(":").map(Number);
+  const ap = h>=12 ? "pm" : "am";
+  h = h%12 || 12;
+  return h + (m ? ":"+pad(m) : "") + " " + ap;
 }
-function addDays(dateStr, n){
-  const d = parseDateLocal(dateStr); d.setDate(d.getDate()+n); return fmtDateISO(d);
-}
-function humanDate(str){
-  if(!str) return "";
-  const d = parseDateLocal(str);
-  const opts = {weekday:'short', day:'numeric', month:'short'};
-  return d.toLocaleDateString('es-MX', opts);
-}
-function longDateToday(){
-  const d = new Date();
-  return d.toLocaleDateString('es-MX', {weekday:'long', day:'numeric', month:'long', year:'numeric'});
-}
-function greeting(){
-  const h = new Date().getHours();
-  if(h < 12) return "Buenos días";
-  if(h < 19) return "Buenas tardes";
-  return "Buenas noches";
-}
-function isPast(dateStr, timeStr){
-  if(!dateStr) return false;
-  const t = todayStr();
-  if(dateStr < t) return true;
-  if(dateStr > t) return false;
-  if(!timeStr) return false;
-  return timeStr < nowTimeStr();
-}
-function uuid(){
-  if(crypto.randomUUID) return crypto.randomUUID();
-  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, c=>{
-    const r = Math.random()*16|0; const v = c==='x'?r:(r&0x3|0x8); return v.toString(16);
-  });
-}
+function greeting(){ const h=new Date().getHours(); return h<12?"Buenos días":h<19?"Buenas tardes":"Buenas noches"; }
 
-/* ================= ESTADO GLOBAL ================= */
-const TABLES = ["tasks","routines","routine_occurrences","projects","waiting_items","ideas","inbox_items"];
-const state = {
-  session: null,
-  user: null,
-  data: { tasks:[], routines:[], routine_occurrences:[], projects:[], waiting_items:[], ideas:[], inbox_items:[] },
-  view: "hoy",
-  online: navigator.onLine,
-  syncStatus: "synced", // synced | syncing | offline
-  filters: { global:"TODOS", tareas:"TODAS", rutinas:"TODAS" },
-  calSelected: todayStr(),
-  calMonth: (()=>{const d=new Date(); return {y:d.getFullYear(), m:d.getMonth()};})(),
+/* ---------------- íconos ---------------- */
+const ICONS = {
+  sun:'<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>',
+  cal:'<rect x="3" y="5" width="18" height="16" rx="3"/><path d="M3 10h18M8 3v4M16 3v4"/>',
+  list:'<path d="M9 6h12M9 12h12M9 18h12"/><circle cx="4" cy="6" r="1.2"/><circle cx="4" cy="12" r="1.2"/><circle cx="4" cy="18" r="1.2"/>',
+  repeat:'<path d="M17 2l4 4-4 4"/><path d="M3 11V9a3 3 0 0 1 3-3h15"/><path d="M7 22l-4-4 4-4"/><path d="M21 13v2a3 3 0 0 1-3 3H3"/>',
+  done:'<circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.7 2.7L16.2 9.6"/>',
+  gear:'<circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/>',
+  search:'<circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/>',
+  plus:'<path d="M12 5v14M5 12h14"/>',
+  check:'<path d="M5 12.5l4.5 4.5L19 7.5"/>',
+  clock:'<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',
+  x:'<path d="M6 6l12 12M18 6L6 18"/>',
+  trash:'<path d="M3 6h18M8 6V4h8v2M6 6l1 14h10l1-14"/>',
+  bell:'<path d="M6 8a6 6 0 1 1 12 0c0 7 3 8 3 8H3s3-1 3-8"/><path d="M10 21a2 2 0 0 0 4 0"/>',
+  notes:'<path d="M4 6h16M4 12h16M4 18h10"/>',
+  sub:'<path d="M9 6h11M9 12h11M9 18h11"/><path d="M4 5.5l1 1 2-2M4 11.5l1 1 2-2"/>',
+};
+const ic = (n, cls="") => `<svg class="i ${cls}" viewBox="0 0 24 24">${ICONS[n]||""}</svg>`;
+
+/* ---------------- estado de la interfaz ---------------- */
+const VIEWS = [
+  {id:"hoy",      label:"Hoy",      icon:"sun"},
+  {id:"proximos", label:"Próximos", icon:"cal"},
+  {id:"todas",    label:"Todas",    icon:"list"},
+  {id:"rutinas",  label:"Rutinas",  icon:"repeat"},
+  {id:"hechas",   label:"Hechas",   icon:"done"},
+];
+const ui = {
+  view: (()=>{ const h=location.hash.slice(1); return VIEWS.some(v=>v.id===h)?h:"hoy"; })(),
+  addDate: null,          // fecha fija elegida con el "+" de un día en Próximos
+  filter: "pendientes",
+  q: "",
+  showDoneToday: false,
 };
 
-let sb = null; // cliente supabase
-let realtimeChannel = null;
+/* ---------------- tareas ---------------- */
+const PRIO = {3:"Alta",2:"Media",1:"Baja",0:"Ninguna"};
+function newTask(o){
+  const t = {id:uid(), title:"", notes:"", date:null, time:null, priority:0, cat:null, subtasks:[], done:false, doneAt:null, createdAt:new Date().toISOString(), ...o};
+  db.tasks.push(t); save(); return t;
+}
+const getTask = id => db.tasks.find(t=>t.id===id);
+function sortTasks(a,b){
+  return (a.date||"9999").localeCompare(b.date||"9999")
+      || (a.time||"99").localeCompare(b.time||"99")
+      || (b.priority||0)-(a.priority||0)
+      || a.createdAt.localeCompare(b.createdAt);
+}
+const pending = () => db.tasks.filter(t=>!t.done);
+const overdue = () => pending().filter(t=>t.date && t.date<today()).sort(sortTasks);
+const dueOn = d => pending().filter(t=>t.date===d).sort(sortTasks);
 
-/* ================= SUPABASE =================
-   Cliente único (singleton). MIDPLANER debe crear el cliente de
-   Supabase (y por lo tanto su GoTrueClient de Auth) UNA SOLA VEZ
-   durante toda la ejecución. initClient() es idempotente: si ya
-   existe una instancia (`sb`), la reutiliza y no vuelve a llamar
-   createClient(), sin importar cuántas veces se invoque la función. */
-function initClient(){
-  if(sb) return true;
-  const cfg = getEffectiveConfig();
-  const check = validateSupabaseConfig(cfg.url, cfg.key);
-  if(!check.ok) return false;
-  if(!window.supabase || typeof window.supabase.createClient !== "function") {
-    console.error("Supabase JS no está disponible.");
-    return false;
+/* ---------------- rutinas ---------------- */
+const FREQ = {diaria:"Todos los días", lunvie:"Lunes a viernes", dias:"Días específicos", mensual:"Cada mes"};
+function routineOn(r, d){
+  if(r.active===false) return false;
+  if(r.start && d < r.start) return false;
+  const dow = parseD(d).getDay();
+  switch(r.freq){
+    case "diaria": return true;
+    case "lunvie": return dow>=1 && dow<=5;
+    case "dias": return (r.days||[]).includes(dow);
+    case "mensual": return parseD(d).getDate() === parseD(r.start||d).getDate();
   }
-  try{
-    sb = window.supabase.createClient(check.url, check.key, {
-      auth: {
-        persistSession: true,
-        autoRefreshToken: true,
-        detectSessionInUrl: true,
-        storageKey: "midplanner-auth"
-      },
-      global: { headers: { "x-client-info": "midplaner-single-file/1.0" } }
-    });
-    return true;
-  }catch(e){ console.error("Error creando cliente Supabase:", e); sb=null; return false; }
+  return false;
 }
-
-/* ================= TOASTS ================= */
-function toast(msg, type){
-  type = type || "info";
-  const wrap = document.getElementById("toast-wrap");
-  const el = document.createElement("div");
-  el.className = "toast "+type;
-  el.innerHTML = "<span>"+({ok:"✅",err:"⚠️",info:"ℹ️"}[type])+"</span><span>"+escapeHtml(msg)+"</span>";
-  wrap.appendChild(el);
-  setTimeout(()=>{ el.style.opacity="0"; setTimeout(()=>el.remove(),200); }, 3200);
-}
-function escapeHtml(s){
-  return String(s==null?"":s).replace(/[&<>"']/g, c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
-}
-
-/* ================= OFFLINE / CACHE / COLA ================= */
-function cacheGet(table){ try{ return JSON.parse(localStorage.getItem(LS_CACHE_PREFIX+table)||"[]"); }catch(e){ return []; } }
-function cacheSet(table, arr){ localStorage.setItem(LS_CACHE_PREFIX+table, JSON.stringify(arr)); }
-function queueGet(){ try{ return JSON.parse(localStorage.getItem(LS_QUEUE)||"[]"); }catch(e){ return []; } }
-function queueSet(q){ localStorage.setItem(LS_QUEUE, JSON.stringify(q)); }
-function queuePush(op){ const q = queueGet(); q.push(op); queueSet(q); }
-
-function setSyncStatus(s){
-  state.syncStatus = s;
-  renderSyncBadges();
-}
-
-window.addEventListener("online", ()=>{ state.online = true; processQueue(); });
-window.addEventListener("offline", ()=>{ state.online = false; setSyncStatus("offline"); });
-
-async function processQueue(){
-  if(!state.online || !sb || !state.user) return;
-  let q = queueGet();
-  if(q.length === 0){ setSyncStatus("synced"); return; }
-  setSyncStatus("syncing");
-  const remaining = [];
-  for(const op of q){
-    try{
-      if(op.type === "insert"){
-        await sb.from(op.table).upsert(op.row);
-      }else if(op.type === "update"){
-        await sb.from(op.table).update(op.patch).eq("id", op.id).eq("user_id", state.user.id);
-      }else if(op.type === "delete"){
-        await sb.from(op.table).delete().eq("id", op.id).eq("user_id", state.user.id);
-      }
-    }catch(e){
-      console.error("sync error", e);
-      remaining.push(op);
-    }
+const routinesOn = d => db.routines.filter(r=>routineOn(r,d)).sort((a,b)=>(a.time||"99").localeCompare(b.time||"99"));
+function routineDone(r,d){ return !!(r.log && r.log[d]); }
+function streak(r){
+  let d = today(), n = 0, guard = 0;
+  if(routineOn(r,d) && !routineDone(r,d)) d = addDays(d,-1);
+  while(guard++ < 800){
+    if(r.start && d < r.start) break;
+    if(routineOn(r,d)){ if(routineDone(r,d)) n++; else break; }
+    d = addDays(d,-1);
   }
-  queueSet(remaining);
-  if(remaining.length === 0){
-    setSyncStatus("synced");
-    await fetchAllTables();
-  }else{
-    setSyncStatus("offline");
-  }
+  return n;
+}
+function freqText(r){
+  if(r.freq==="dias") return (r.days||[]).slice().sort((a,b)=>((a+6)%7)-((b+6)%7)).map(i=>DOW_FULL[i].slice(0,3)).join(", ") || "Sin días";
+  return FREQ[r.freq]||"";
 }
 
-/* ================= CRUD GENÉRICO (con soporte offline) ================= */
-async function fetchAllTables(){
-  if(!sb || !state.user) return;
-  setSyncStatus("syncing");
-  try{
-    for(const table of TABLES){
-      const { data, error } = await sb.from(table).select("*").eq("user_id", state.user.id).order("created_at",{ascending:true});
-      if(error) throw error;
-      state.data[table] = data || [];
-      cacheSet(table, state.data[table]);
-    }
-    setSyncStatus("synced");
-  }catch(e){
-    console.warn("fetch offline fallback", e);
-    for(const table of TABLES){ state.data[table] = cacheGet(table); }
-    setSyncStatus(state.online ? "synced" : "offline");
-  }
+/* =========================================================
+   CAPTURA RÁPIDA — lenguaje natural en español
+   Ejemplos: "Llamar a Luis mañana a las 10 !alta #trabajo"
+             "Pagar tarjeta el viernes 5pm"   "Junta 28/11 16:30"
+   ========================================================= */
+const DOWMAP = {domingo:0,lunes:1,martes:2,"miércoles":3,miercoles:3,jueves:4,viernes:5,"sábado":6,sabado:6};
+function parseQuick(text){
+  let s = " " + text + " ";
+  const out = {date:undefined, time:null, priority:0, cat:null};
+  const cut = (re, fn) => { const m = s.match(re); if(m){ fn(m); s = s.replace(m[0]," "); return true; } return false; };
+
+  cut(/\s#(trabajo|personal|t|p)(?=\s)/i, m=>{ out.cat = m[1][0].toLowerCase()==="t" ? "trabajo" : "personal"; });
+  cut(/\s!(alta|media|baja|1|2|3)(?=\s)/i, m=>{ out.priority = {alta:3,"1":3,media:2,"2":2,baja:1,"3":1}[m[1].toLowerCase()]; })
+    || cut(/\s(!{1,3})(?=\s)/, m=>{ out.priority = m[1].length; });
+
+  const setTime = (h,mi,ap,assumePm) => {
+    h = +h; mi = +(mi||0);
+    ap = (ap||"").toLowerCase();
+    if(ap==="pm" && h<12) h += 12;
+    if(ap==="am" && h===12) h = 0;
+    if(!ap && assumePm && h>=1 && h<=6) h += 12;
+    if(h<24 && mi<60) out.time = pad(h)+":"+pad(mi);
+  };
+  cut(/\sa\s+las?\s+(\d{1,2})(?::(\d{2}))?\s*(am|pm|hrs|h)?(?=\s)/i, m=>setTime(m[1],m[2],m[3],true))
+    || cut(/\s(\d{1,2})(?::(\d{2}))?\s*(am|pm)(?=\s)/i, m=>setTime(m[1],m[2],m[3]))
+    || cut(/\s(\d{1,2}):(\d{2})\s*(hrs|h)?(?=\s)/i, m=>setTime(m[1],m[2]));
+
+  const t0 = today();
+  cut(/\spasado\s+mañana(?=\s)/i, ()=>{ out.date = addDays(t0,2); })
+    || cut(/\smañana(?=\s)/i, ()=>{ out.date = addDays(t0,1); })
+    || cut(/\shoy(?=\s)/i, ()=>{ out.date = t0; })
+    || cut(/\s(?:la\s+)?pr[oó]xima\s+semana(?=\s)/i, ()=>{ const dw=parseD(t0).getDay(); out.date = addDays(t0, ((8-dw)%7)||7); })
+    || cut(/\sen\s+(\d{1,3})\s+d[ií]as?(?=\s)/i, m=>{ out.date = addDays(t0, +m[1]); })
+    || cut(/\s(?:sin\s+fecha|algún\s+día|algun\s+dia)(?=\s)/i, ()=>{ out.date = null; })
+    || cut(/\s(?:el\s+|este\s+|pr[oó]ximo\s+)?(lunes|martes|mi[eé]rcoles|jueves|viernes|s[aá]bado|domingo)(?=\s)/i, m=>{
+         const target = DOWMAP[m[1].toLowerCase()];
+         const dw = parseD(t0).getDay();
+         out.date = addDays(t0, ((target-dw+7)%7)||7);
+       })
+    || cut(/\s(?:el\s+)?(\d{1,2})\/(\d{1,2})(?:\/(\d{2,4}))?(?=\s)/, m=>{
+         const now = new Date();
+         let y = m[3] ? +m[3] : now.getFullYear(); if(y<100) y += 2000;
+         const d = new Date(y, +m[2]-1, +m[1]);
+         if(d.getMonth() !== +m[2]-1) return;
+         let r = iso(d);
+         if(!m[3] && r < t0){ d.setFullYear(y+1); r = iso(d); }
+         out.date = r;
+       });
+
+  out.title = s.replace(/\s+/g," ").trim();
+  return out;
+}
+
+/* ---------------- render general ---------------- */
+function render(){
+  renderSidebar();
+  renderTabbar();
+  renderPage();
+  $("#fab").innerHTML = ic("plus");
+}
+
+function counts(){
+  return {
+    hoy: dueOn(today()).length + overdue().length,
+    late: overdue().length,
+    proximos: pending().filter(t=>t.date && t.date>today()).length,
+    todas: pending().length,
+    rutinas: routinesOn(today()).filter(r=>!routineDone(r,today())).length,
+    hechas: 0,
+  };
+}
+
+function renderSidebar(){
+  const c = counts();
+  $("#sidebar").innerHTML = `
+    <div class="brand"><div class="logo">${ic("check")}</div><b>MIDPLANER</b></div>
+    ${VIEWS.map(v=>`
+      <button class="nav ${ui.view===v.id?"on":""}" data-act="view" data-v="${v.id}">
+        ${ic(v.icon)}<span>${v.label}</span>
+        ${c[v.id] ? `<span class="n ${v.id==="hoy"&&c.late?"late":""}">${c[v.id]}</span>` : ""}
+      </button>`).join("")}
+    <div class="side-foot">
+      <button class="nav" data-act="settings">${ic("gear")}<span>Ajustes</span></button>
+      <div class="store">Tus datos se guardan en este navegador. Haz un respaldo desde Ajustes.</div>
+    </div>`;
+}
+function renderTabbar(){
+  const c = counts();
+  $("#tabbar").innerHTML = VIEWS.map(v=>`
+    <button class="tab ${ui.view===v.id?"on":""}" data-act="view" data-v="${v.id}">
+      ${ic(v.icon)}<span>${v.label}</span>
+      ${v.id==="hoy" && c.late ? `<span class="dot">${c.late}</span>` : ""}
+    </button>`).join("");
+}
+
+function headHtml(title, sub){
+  return `<div class="head">
+    <div><h1>${title}</h1>${sub?`<div class="subtitle">${sub}</div>`:""}</div>
+    <div class="head-btns">
+      <button class="icon-btn" data-act="go-search" title="Buscar">${ic("search")}</button>
+      <button class="icon-btn only-mobile" data-act="settings" title="Ajustes">${ic("gear")}</button>
+    </div>
+  </div>`;
+}
+
+function quickAddHtml(){
+  return `<div class="wrap-qa">
+    <form class="qa" id="qa" autocomplete="off">
+      <span class="plus">${ic("plus")}</span>
+      <input id="qa-in" placeholder="Agregar tarea…" enterkeyhint="done">
+      <button type="submit" id="qa-btn" disabled>Agregar</button>
+    </form>
+    <div class="qa-prev" id="qa-prev"></div>
+  </div>`;
+}
+function defaultAddDate(){
+  if(ui.addDate) return ui.addDate;
+  if(ui.view==="hoy") return today();
+  return null;
+}
+function updatePreview(){
+  const inp = $("#qa-in"), box = $("#qa-prev"), btn = $("#qa-btn");
+  if(!inp || !box) return;
+  const txt = inp.value.trim();
+  btn.disabled = !txt;
+  const p = parseQuick(inp.value);
+  const date = p.date===undefined ? defaultAddDate() : p.date;
+  let h = "";
+  if(date) h += `<span class="pill ${date===today()?"today":"date"}">${ic("cal","sm")}${dayLabel(date)}${ui.addDate && p.date===undefined ? `<button type="button" data-act="clear-adddate" title="Quitar">${ic("x","sm")}</button>`:""}</span>`;
+  if(p.time) h += `<span class="pill">${ic("clock","sm")}${fmtTime(p.time)}</span>`;
+  if(p.priority) h += `<span class="pill p${p.priority}">Prioridad ${PRIO[p.priority].toLowerCase()}</span>`;
+  if(p.cat) h += `<span class="pill ${p.cat}">${cap(p.cat)}</span>`;
+  if(!txt) h += `<span class="qa-hint">Escribe natural: <code>mañana</code> <code>viernes</code> <code>28/11</code> <code>a las 10</code> <code>5pm</code> <code>!alta</code> <code>#trabajo</code></span>`;
+  box.innerHTML = h;
+}
+function submitQuick(){
+  const inp = $("#qa-in");
+  const p = parseQuick(inp.value);
+  if(!p.title){ toast("Escribe el nombre de la tarea"); return; }
+  const date = p.date===undefined ? defaultAddDate() : p.date;
+  const t = newTask({title:p.title, date, time:p.time, priority:p.priority, cat:p.cat});
+  inp.value = "";
   render();
+  const again = $("#qa-in"); if(again) again.focus();
+  toast(`Agregada · ${t.date ? dayLabel(t.date) : "Sin fecha"}${t.time?" "+fmtTime(t.time):""}`);
 }
 
-function localApply(table, kind, row){
-  const arr = state.data[table];
-  if(kind === "insert"){ arr.push(row); }
-  else if(kind === "update"){ const i = arr.findIndex(r=>r.id===row.id); if(i>-1) arr[i] = {...arr[i], ...row}; }
-  else if(kind === "delete"){ const i = arr.findIndex(r=>r.id===row.id); if(i>-1) arr.splice(i,1); }
-  cacheSet(table, arr);
+/* ---------------- filas ---------------- */
+function taskRow(t, {showDate=true}={}){
+  const late = !t.done && t.date && t.date < today();
+  const subsDone = (t.subtasks||[]).filter(s=>s.done).length;
+  let meta = "";
+  if(showDate && t.date) meta += `<span class="pill ${late?"late":t.date===today()?"today":""}">${ic("cal","sm")}${dayLabel(t.date)}</span>`;
+  if(t.time) meta += `<span class="pill ${late?"late":""}">${ic("clock","sm")}${fmtTime(t.time)}</span>`;
+  if(t.cat) meta += `<span class="pill ${t.cat}">${cap(t.cat)}</span>`;
+  if(t.subtasks && t.subtasks.length) meta += `<span class="pill">${ic("sub","sm")}${subsDone}/${t.subtasks.length}</span>`;
+  if(t.notes) meta += `<span class="pill">${ic("notes","sm")}</span>`;
+  return `<div class="row ${t.done?"done":""}" data-id="${t.id}">
+    <button class="chk ${t.done?"on":"p"+(t.priority||0)}" data-act="toggle" data-id="${t.id}" aria-label="Completar">${ic("check")}</button>
+    <div class="body" data-act="open" data-id="${t.id}">
+      <div class="t">${esc(t.title)}</div>
+      <div class="m">${meta}</div>
+    </div>
+  </div>`;
+}
+function routineRow(r, d, {showFreq=false}={}){
+  const done = routineDone(r,d);
+  const st = streak(r);
+  let meta = "";
+  if(r.time) meta += `<span class="pill">${ic("clock","sm")}${fmtTime(r.time)}</span>`;
+  meta += `<span class="pill">${ic("repeat","sm")}${showFreq?freqText(r):"Rutina"}</span>`;
+  if(r.cat) meta += `<span class="pill ${r.cat}">${cap(r.cat)}</span>`;
+  if(r.notify) meta += `<span class="pill">${ic("bell","sm")}</span>`;
+  if(r.active===false) meta += `<span class="pill">Pausada</span>`;
+  if(st>=2) meta += `<span class="streak">🔥 ${st} seguidas</span>`;
+  const showChk = routineOn(r,d);
+  return `<div class="row ${done?"done":""}">
+    ${showChk ? `<button class="chk rt ${done?"on":""}" data-act="toggle-rt" data-id="${r.id}" aria-label="Hecha">${ic("check")}</button>` : `<span style="width:22px;flex:0 0 22px"></span>`}
+    <div class="body" data-act="open-rt" data-id="${r.id}">
+      <div class="t">${esc(r.name)}</div>
+      <div class="m">${meta}</div>
+    </div>
+  </div>`;
+}
+function section(title, count, inner, {action="", late=false}={}){
+  return `<section class="sec">
+    <div class="sec-h"><h2 class="${late?"late":""}">${title}${count!=null?` <span class="c">${count}</span>`:""}</h2>${action}</div>
+    <div class="group">${inner}</div>
+  </section>`;
+}
+function emptyHtml(emoji, title, text){
+  return `<div class="empty"><div class="big">${emoji}</div><b>${title}</b>${text||""}</div>`;
 }
 
-async function insertRow(table, row){
-  row.id = row.id || uuid();
-  row.user_id = state.user.id;
-  row.created_at = row.created_at || new Date().toISOString();
-  localApply(table, "insert", row);
-  render();
-  if(!state.online){ queuePush({type:"insert", table, row}); setSyncStatus("offline"); return row; }
-  try{
-    const { error } = await sb.from(table).insert(row);
-    if(error) throw error;
-    setSyncStatus("synced");
-  }catch(e){
-    console.error(e); queuePush({type:"insert", table, row}); setSyncStatus("offline");
+/* ---------------- vistas ---------------- */
+function renderPage(){
+  const page = $("#page");
+  const map = {hoy:viewHoy, proximos:viewProximos, todas:viewTodas, rutinas:viewRutinas, hechas:viewHechas};
+  const keepQa = $("#qa-in") ? $("#qa-in").value : "";
+  page.innerHTML = (map[ui.view]||viewHoy)();
+  const qa = $("#qa");
+  if(qa){
+    const inp = $("#qa-in");
+    inp.value = keepQa;
+    inp.placeholder = ui.view==="hoy" ? "Agregar tarea para hoy…" : "Agregar tarea…";
+    inp.addEventListener("input", updatePreview);
+    qa.addEventListener("submit", e=>{ e.preventDefault(); submitQuick(); });
+    updatePreview();
   }
-  return row;
-}
-async function updateRow(table, id, patch){
-  localApply(table, "update", {id, ...patch});
-  render();
-  if(!state.online){ queuePush({type:"update", table, id, patch}); setSyncStatus("offline"); return; }
-  try{
-    const { error } = await sb.from(table).update(patch).eq("id", id).eq("user_id", state.user.id);
-    if(error) throw error;
-    setSyncStatus("synced");
-  }catch(e){
-    console.error(e); queuePush({type:"update", table, id, patch}); setSyncStatus("offline");
-  }
-}
-async function deleteRow(table, id){
-  localApply(table, "delete", {id});
-  render();
-  if(!state.online){ queuePush({type:"delete", table, id}); setSyncStatus("offline"); return; }
-  try{
-    const { error } = await sb.from(table).delete().eq("id", id).eq("user_id", state.user.id);
-    if(error) throw error;
-    setSyncStatus("synced");
-  }catch(e){
-    console.error(e); queuePush({type:"delete", table, id}); setSyncStatus("offline");
-  }
-}
-
-function setupRealtime(){
-  if(!sb || !state.user) return;
-  if(realtimeChannel){ sb.removeChannel(realtimeChannel); }
-  realtimeChannel = sb.channel("midplanner-changes");
-  TABLES.forEach(table=>{
-    realtimeChannel.on("postgres_changes", { event:"*", schema:"public", table, filter:`user_id=eq.${state.user.id}` }, (payload)=>{
-      const row = payload.new && Object.keys(payload.new).length ? payload.new : payload.old;
-      if(!row) return;
-      if(payload.eventType === "DELETE"){ localApply(table,"delete",row); }
-      else if(payload.eventType === "INSERT"){
-        const exists = state.data[table].some(r=>r.id===row.id);
-        if(!exists) localApply(table,"insert",row); else localApply(table,"update",row);
-      } else { localApply(table,"update",row); }
-      render();
-    });
-  });
-  realtimeChannel.subscribe();
-}
-
-/* ================= AUTH ================= */
-async function doSignUp(email, pass){
-  const { data, error } = await sb.auth.signUp({ email, password: pass });
-  if(error){ toast(error.message, "err"); return false; }
-  toast("Cuenta creada. Iniciando sesión…", "ok");
-  return true;
-}
-async function doSignIn(email, pass){
-  const { data, error } = await sb.auth.signInWithPassword({ email, password: pass });
-  if(error){ toast(error.message, "err"); return false; }
-  return true;
-}
-async function doSignOut(){
-  await sb.auth.signOut();
-  state.user = null; state.session = null;
-  if(realtimeChannel){ sb.removeChannel(realtimeChannel); realtimeChannel = null; }
-  renderRoot();
-}
-
-/* ================= RUTINAS: lógica de ocurrencias ================= */
-function dowMatches(routine, dateStr){
-  const d = parseDateLocal(dateStr);
-  const day = d.getDay(); // 0=domingo
-  const startDow = parseDateLocal(routine.start_date).getDay();
-  switch(routine.frequency){
-    case "DIARIA": return true;
-    case "LUNES_A_VIERNES": return day>=1 && day<=5;
-    case "SEMANAL": return day === startDow;
-    case "CADA_2_SEMANAS": {
-      const start = parseDateLocal(routine.start_date);
-      const diffDays = Math.round((d - start) / 86400000);
-      return day === startDow && Math.floor(diffDays/7) % 2 === 0;
-    }
-    case "MENSUAL": return d.getDate() === parseDateLocal(routine.start_date).getDate();
-    case "PERSONALIZADA": {
-      const days = (routine.custom_days || []).map(Number);
-      return days.includes(day);
-    }
-    default: return false;
+  const sq = $("#search-in");
+  if(sq){
+    sq.addEventListener("input", ()=>{ ui.q = sq.value; const l=$("#todas-list"); if(l) l.innerHTML = todasListHtml(); });
   }
 }
-function routineActiveOn(routine, dateStr){
-  if(!routine.active) return false;
-  if(dateStr < routine.start_date) return false;
-  if(routine.end_date && dateStr > routine.end_date) return false;
-  return dowMatches(routine, dateStr);
-}
-async function ensureOccurrence(routine, dateStr){
-  let occ = state.data.routine_occurrences.find(o=>o.routine_id===routine.id && o.date===dateStr);
-  if(occ) return occ;
-  if(!routineActiveOn(routine, dateStr)) return null;
-  occ = await insertRow("routine_occurrences", { routine_id: routine.id, date: dateStr, status: "PENDIENTE" });
-  return occ;
-}
-async function ensureOccurrencesForRange(startStr, endStr){
-  for(const routine of state.data.routines){
-    let d = startStr;
-    let guard = 0;
-    while(d <= endStr && guard < 400){
-      await ensureOccurrence(routine, d);
-      d = addDays(d, 1);
-      guard++;
-    }
+
+function viewHoy(){
+  const t = today();
+  const late = overdue();
+  const tasks = dueOn(t);
+  const rts = routinesOn(t);
+  const doneToday = db.tasks.filter(x=>x.done && x.doneAt && x.doneAt.slice(0,10)===t);
+  const doneTodayDue = db.tasks.filter(x=>x.done && x.date===t).length;
+  const total = tasks.length + doneTodayDue + rts.length;
+  const done = doneTodayDue + rts.filter(r=>routineDone(r,t)).length;
+  const pct = total ? Math.round(done/total*100) : 0;
+  const C = 2*Math.PI*25;
+  let msg;
+  if(!total) msg = "Día libre por ahora. Agrega lo que quieras lograr hoy.";
+  else if(done===total) msg = "¡Todo listo por hoy! 🎉";
+  else msg = `Te faltan ${total-done} de ${total}${late.length?` · ${late.length} vencida${late.length>1?"s":""}`:""}`;
+
+  let h = headHtml(greeting(), cap(longDate(t)));
+  h += `<div class="hero">
+    <div class="ring"><svg viewBox="0 0 58 58"><circle class="bg" cx="29" cy="29" r="25"/><circle class="fg" cx="29" cy="29" r="25" stroke-dasharray="${C}" stroke-dashoffset="${C*(1-pct/100)}"/></svg><div class="pct">${pct}%</div></div>
+    <div><div class="h1">${total ? `${done} de ${total} hechas` : "Sin pendientes"}</div><div class="h2">${msg}</div></div>
+  </div>`;
+  h += quickAddHtml();
+  if(late.length) h += section("Vencidas", late.length, late.map(x=>taskRow(x)).join(""), {late:true, action:`<button class="link" data-act="move-late">Pasar todo a hoy</button>`});
+  if(rts.length) h += section("Rutinas", `${rts.filter(r=>routineDone(r,t)).length}/${rts.length}`, rts.map(r=>routineRow(r,t)).join(""));
+  h += section("Tareas", tasks.length||null, tasks.length ? tasks.map(x=>taskRow(x,{showDate:false})).join("") : emptyHtml("☀️","Nada pendiente para hoy","Usa la barra de arriba para agregar algo."));
+  if(doneToday.length){
+    h += `<section class="sec"><div class="sec-h"><h2>Completadas hoy <span class="c">${doneToday.length}</span></h2><button class="link" data-act="toggle-donetoday">${ui.showDoneToday?"Ocultar":"Mostrar"}</button></div>
+      ${ui.showDoneToday ? `<div class="group">${doneToday.map(x=>taskRow(x,{showDate:false})).join("")}</div>` : ""}</section>`;
   }
-}
-function occurrencesOn(dateStr){
-  return state.data.routine_occurrences.filter(o=>o.date===dateStr).map(o=>{
-    const r = state.data.routines.find(rt=>rt.id===o.routine_id);
-    return { occ:o, routine:r };
-  }).filter(x=>x.routine);
+  return h;
 }
 
-/* ================= DERIVADOS ================= */
-function tasksToday(){
-  const t = todayStr();
-  return state.data.tasks.filter(x=>x.status!=="COMPLETADA" && x.date===t);
-}
-function tasksOverdue(){
-  const t = todayStr();
-  return state.data.tasks.filter(x=>x.status!=="COMPLETADA" && x.date && x.date < t);
-}
-function tasksPriorityHighToday(){
-  return tasksToday().filter(x=>x.priority==="ALTA");
-}
-function waitingFollowupsToday(){
-  const t = todayStr();
-  return state.data.waiting_items.filter(w=>(w.status==="ESPERANDO"||w.status==="DAR SEGUIMIENTO") && w.followup_date && w.followup_date<=t);
-}
-function projectProgress(p){
-  const tasks = state.data.tasks.filter(t=>t.project_id===p.id);
-  if(tasks.length===0) return {done:0,total:0,pct:0};
-  const done = tasks.filter(t=>t.status==="COMPLETADA").length;
-  return {done, total: tasks.length, pct: Math.round(done/tasks.length*100)};
+function viewProximos(){
+  const t = today();
+  let h = headHtml("Próximos", "Lo que viene en los siguientes días");
+  h += quickAddHtml();
+  for(let i=1;i<=7;i++){
+    const d = addDays(t,i);
+    const list = dueOn(d);
+    const rtCount = routinesOn(d).length;
+    h += `<section class="sec">
+      <div class="day-h"><b>${dayLabel(d)}</b><span>${parseD(d).toLocaleDateString("es-MX",{day:"numeric",month:"long"})}${rtCount?` · ${rtCount} rutina${rtCount>1?"s":""}`:""}</span>
+        <button class="link" data-act="add-on" data-d="${d}">+ Agregar</button></div>
+      <div class="group">${list.length ? list.map(x=>taskRow(x,{showDate:false})).join("") : `<div class="day-empty">Sin tareas</div>`}</div>
+    </section>`;
+  }
+  const later = pending().filter(x=>x.date && x.date>addDays(t,7)).sort(sortTasks);
+  if(later.length) h += section("Más adelante", later.length, later.map(x=>taskRow(x)).join(""));
+  return h;
 }
 
-/* ================= RENDER: SHELL ================= */
-const NAV = [
-  {id:"hoy", ic:"☀️", label:"Hoy"},
-  {id:"inbox", ic:"📥", label:"Inbox"},
-  {id:"tareas", ic:"📋", label:"Tareas"},
-  {id:"rutinas", ic:"🔁", label:"Rutinas"},
-  {id:"proyectos", ic:"📁", label:"Proyectos"},
-  {id:"esperando", ic:"⏳", label:"Esperando"},
-  {id:"ideas", ic:"💡", label:"Ideas"},
-  {id:"calendario", ic:"📅", label:"Calendario"},
-  {id:"control", ic:"🎛️", label:"Centro de control"},
-  {id:"config", ic:"⚙️", label:"Configuración"},
+const FILTERS = [
+  {id:"pendientes", label:"Pendientes", fn:t=>!t.done},
+  {id:"sinfecha",   label:"Sin fecha",  fn:t=>!t.done && !t.date},
+  {id:"alta",       label:"Prioridad alta", fn:t=>!t.done && t.priority===3},
+  {id:"trabajo",    label:"Trabajo",    fn:t=>!t.done && t.cat==="trabajo"},
+  {id:"personal",   label:"Personal",   fn:t=>!t.done && t.cat==="personal"},
 ];
-const NAV_MOBILE = ["hoy","inbox","tareas","rutinas","mas"];
+function todasListHtml(){
+  const f = FILTERS.find(x=>x.id===ui.filter) || FILTERS[0];
+  const q = ui.q.trim().toLowerCase();
+  let list = db.tasks.filter(t => q ? (t.title+" "+(t.notes||"")).toLowerCase().includes(q) : f.fn(t));
+  list.sort((a,b)=> (a.done-b.done) || sortTasks(a,b));
+  if(!list.length) return `<div class="group">${q ? emptyHtml("🔎","Sin resultados","") : emptyHtml("✨","Nada por aquí","")}</div>`;
+  return `<div class="group">${list.map(x=>taskRow(x)).join("")}</div>`;
+}
+function viewTodas(){
+  let h = headHtml("Todas", `${pending().length} pendientes`);
+  h += quickAddHtml();
+  h += `<div class="search">${ic("search")}<input id="search-in" placeholder="Buscar tareas…" value="${esc(ui.q)}"></div>`;
+  h += `<div class="chips filters">${FILTERS.map(f=>`<button class="chip ${ui.filter===f.id&&!ui.q?"on":""}" data-act="filter" data-f="${f.id}">${f.label}</button>`).join("")}</div>`;
+  h += `<div id="todas-list">${todasListHtml()}</div>`;
+  return h;
+}
 
-function renderRoot(){
-  const root = document.getElementById("root");
-  document.getElementById("boot-loading").style.display = "none";
-  root.style.display = "block";
-  if(!getEffectiveConfig().url || !getEffectiveConfig().key){
-    root.innerHTML = setupScreenHtml();
-    bindSetupScreen();
-    return;
+function viewRutinas(){
+  const t = today();
+  const todayR = routinesOn(t);
+  const all = db.routines.slice().sort((a,b)=>(a.time||"99").localeCompare(b.time||"99"));
+  let h = headHtml("Rutinas", "Hábitos que se repiten solos");
+  h += `<div style="margin-bottom:22px"><button class="btn pri" data-act="new-rt">${ic("plus")}Nueva rutina</button></div>`;
+  if(todayR.length) h += section("Hoy", `${todayR.filter(r=>routineDone(r,t)).length}/${todayR.length}`, todayR.map(r=>routineRow(r,t)).join(""));
+  h += section("Todas las rutinas", all.length||null, all.length ? all.map(r=>routineRow(r,t,{showFreq:true})).join("") : emptyHtml("🔁","Aún no tienes rutinas","Ej. Revisar ventas de lunes a viernes a las 8:30."));
+  return h;
+}
+
+function viewHechas(){
+  const done = db.tasks.filter(t=>t.done).sort((a,b)=>(b.doneAt||"").localeCompare(a.doneAt||""));
+  let h = headHtml("Hechas", `${done.length} completada${done.length===1?"":"s"}`);
+  if(!done.length) return h + `<div class="group">${emptyHtml("✅","Aquí verás lo que vas terminando","")}</div>`;
+  h += `<div style="margin-bottom:22px"><button class="btn danger" data-act="clear-done">${ic("trash")}Borrar completadas</button></div>`;
+  const groups = {};
+  done.forEach(t=>{ const k=(t.doneAt||"").slice(0,10)||"—"; (groups[k]=groups[k]||[]).push(t); });
+  Object.keys(groups).forEach(k=>{
+    h += section(k==="—"?"Sin fecha":dayLabel(k), groups[k].length, groups[k].map(x=>taskRow(x)).join(""));
+  });
+  return h;
+}
+
+/* ---------------- acciones ---------------- */
+function toggleTask(id, btn){
+  const t = getTask(id); if(!t) return;
+  if(t.done){
+    t.done = false; t.doneAt = null; save(); render(); return;
   }
-  if(!state.user){
-    root.innerHTML = authScreenHtml();
-    bindAuthScreen();
-    return;
-  }
-  root.innerHTML = shellHtml();
-  bindShell();
-  render();
+  const row = btn && btn.closest(".row");
+  if(btn){ btn.classList.add("on","pop"); }
+  setTimeout(()=>{ if(row) row.classList.add("leaving"); }, 220);
+  setTimeout(()=>{
+    t.done = true; t.doneAt = new Date().toISOString(); save(); render();
+    toast("Tarea completada", ()=>{ t.done=false; t.doneAt=null; save(); render(); });
+  }, 520);
+}
+function toggleRoutine(id){
+  const r = db.routines.find(x=>x.id===id); if(!r) return;
+  const d = today();
+  r.log = r.log || {};
+  if(r.log[d]) delete r.log[d]; else r.log[d] = true;
+  save(); render();
+  if(r.log[d]){ const s=streak(r); toast(s>=2?`¡${s} veces seguidas! 🔥`:"Rutina hecha"); }
 }
 
-function setupScreenHtml(){
-  const cfg = getEffectiveConfig();
-  return `
-  <div id="setup-screen"><div class="setup-box card">
-    <div class="auth-box brand" style="margin-bottom:16px;"><div class="logo">M</div><div class="name">MIDPLANER</div></div>
-    <h3 style="margin-top:0;">Conecta tu proyecto Supabase</h3>
-    <p class="hint">Introduce tu Project URL y tu clave Publishable/Anon. Acepta tanto el formato moderno (<code>sb_publishable_...</code>) como el formato JWT antiguo (<code>eyJ...</code>). Se guardan solo en este navegador (localStorage), nunca se envían a ningún otro lugar.</p>
-    <div class="field"><label>Project URL</label><input id="cfg-url" type="text" value="${escapeHtml(cfg.url)}" placeholder="https://xxxx.supabase.co"></div>
-    <div class="field"><label>Publishable / Anon Key</label><input id="cfg-key" type="text" value="${escapeHtml(cfg.key)}" placeholder="sb_publishable_..."></div>
-    <div style="display:flex;gap:8px;flex-wrap:wrap;">
-      <button class="btn primary" id="cfg-save" style="flex:1;justify-content:center;">Guardar y continuar</button>
-      <button class="btn ghost" id="cfg-test" style="flex:1;justify-content:center;">Probar conexión</button>
-    </div>
-    <div id="cfg-test-result" style="margin-top:10px;"></div>
-    <p class="hint">¿Dónde consigo esto? Panel de Supabase → tu proyecto → Project Settings → API Keys → clave "Publishable".</p>
-  </div></div>`;
-}
-function bindSetupScreen(){
-  document.getElementById("cfg-save").onclick = ()=>{
-    const url = document.getElementById("cfg-url").value.trim();
-    const key = document.getElementById("cfg-key").value.trim();
-    const saved = saveConfig(url, key);
-    if(!saved.ok){ toast(saved.message, "err"); return; }
-    sb = null;
-    boot();
-  };
-  document.getElementById("cfg-test").onclick = ()=>testSupabaseConnection(
-    document.getElementById("cfg-url").value.trim(),
-    document.getElementById("cfg-key").value.trim(),
-    document.getElementById("cfg-test-result")
-  );
-}
-
-function authScreenHtml(){
-  return `
-  <div id="auth-screen"><div class="auth-box">
-    <div class="brand"><div class="logo">M</div><div class="name">MIDPLANER</div></div>
-    <div class="card">
-      <div class="auth-tabs">
-        <button id="tab-login" class="active">Iniciar sesión</button>
-        <button id="tab-signup">Crear cuenta</button>
-      </div>
-      <div class="field"><label>Correo</label><input id="auth-email" type="email" placeholder="tu@correo.com"></div>
-      <div class="field"><label>Contraseña</label><input id="auth-pass" type="password" placeholder="••••••••"></div>
-      <button class="btn primary" id="auth-submit" style="width:100%;justify-content:center;">Iniciar sesión</button>
-      <p class="hint" id="auth-hint"></p>
-    </div>
-    <p class="hint" style="text-align:center;margin-top:14px;">¿Problemas de conexión? Puedes probar Supabase sin salir de esta pantalla.</p>
-    <div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:6px;">
-      <button class="btn ghost sm" id="auth-diagnose">Diagnóstico Supabase</button>
-      <button class="btn ghost sm" id="auth-reconfig">Cambiar configuración</button>
-    </div>
-    <div id="auth-test-result" style="margin-top:10px;"></div>
-  </div></div>`;
-}
-function bindAuthScreen(){
-  const diag = document.getElementById("auth-diagnose");
-  if(diag) diag.onclick = ()=>{ const cfg=getEffectiveConfig(); testSupabaseConnection(cfg.url,cfg.key,document.getElementById("auth-test-result")); };
-  let mode = "login";
-  const tabLogin = document.getElementById("tab-login");
-  const tabSignup = document.getElementById("tab-signup");
-  const submit = document.getElementById("auth-submit");
-  tabLogin.onclick = ()=>{ mode="login"; tabLogin.classList.add("active"); tabSignup.classList.remove("active"); submit.textContent="Iniciar sesión"; };
-  tabSignup.onclick = ()=>{ mode="signup"; tabSignup.classList.add("active"); tabLogin.classList.remove("active"); submit.textContent="Crear cuenta"; };
-  submit.onclick = async ()=>{
-    const email = document.getElementById("auth-email").value.trim();
-    const pass = document.getElementById("auth-pass").value;
-    const hint = document.getElementById("auth-hint");
-    if(!email || !pass){ toast("Completa correo y contraseña","err"); return; }
-    submit.disabled = true;
-    if(hint) hint.textContent = mode === "login" ? "Conectando con tu cuenta…" : "Creando tu cuenta…";
-    try{
-      let ok;
-      if(mode==="signup") ok = await doSignUp(email, pass);
-      else ok = await doSignIn(email, pass);
-      if(ok){
-        if(hint) hint.textContent = "Sesión iniciada. Cargando MIDPLANER…";
-        await afterLogin();
-      }
-    }catch(e){
-      console.error("Error en autenticación:", e);
-      if(hint) hint.textContent = "Error al entrar: " + (e?.message || e);
-      toast(e?.message || "No se pudo iniciar sesión", "err");
-    }finally{
-      submit.disabled = false;
+document.addEventListener("click", e=>{
+  const el = e.target.closest("[data-act]");
+  if(!el) return;
+  const a = el.dataset.act, id = el.dataset.id;
+  switch(a){
+    case "view": go(el.dataset.v); break;
+    case "toggle": e.stopPropagation(); toggleTask(id, el); break;
+    case "open": openTask(id); break;
+    case "toggle-rt": toggleRoutine(id); break;
+    case "open-rt": openRoutine(id); break;
+    case "new-rt": openRoutine(null); break;
+    case "add-on": ui.addDate = el.dataset.d; window.scrollTo({top:0,behavior:"smooth"}); updatePreview(); $("#qa-in").focus(); break;
+    case "clear-adddate": ui.addDate = null; updatePreview(); $("#qa-in").focus(); break;
+    case "move-late": {
+      const late = overdue(); const prev = late.map(t=>[t,t.date]);
+      late.forEach(t=>t.date=today()); save(); render();
+      toast(`${late.length} tarea${late.length>1?"s":""} movida${late.length>1?"s":""} a hoy`, ()=>{ prev.forEach(([t,d])=>t.date=d); save(); render(); });
+      break;
     }
-  };
-  document.getElementById("auth-reconfig").onclick = ()=>{
-    localStorage.removeItem(LS_CONFIG);
-    // Se libera la instancia actual del cliente: la próxima vez que se
-    // guarde una configuración, initClient() creará UNA nueva instancia
-    // (no una adicional) porque `sb` ya no apunta a la anterior.
-    if(realtimeChannel){ try{ sb && sb.removeChannel(realtimeChannel); }catch(e){} realtimeChannel = null; }
-    sb = null;
-    renderRoot();
-  };
+    case "filter": ui.filter = el.dataset.f; ui.q = ""; render(); break;
+    case "toggle-donetoday": ui.showDoneToday = !ui.showDoneToday; render(); break;
+    case "clear-done": {
+      const removed = db.tasks.filter(t=>t.done);
+      if(!confirm(`¿Borrar ${removed.length} tareas completadas?`)) return;
+      db.tasks = db.tasks.filter(t=>!t.done); save(); render();
+      toast("Completadas borradas", ()=>{ db.tasks.push(...removed); save(); render(); });
+      break;
+    }
+    case "settings": openSettings(); break;
+    case "go-search": go("todas"); setTimeout(()=>{ const s=$("#search-in"); if(s) s.focus(); }, 30); break;
+  }
+});
+function go(v){
+  ui.view = v; ui.addDate = null;
+  if(history.replaceState) history.replaceState(null,"","#"+v);
+  render(); window.scrollTo(0,0);
+}
+$("#fab").addEventListener("click", ()=>{
+  if(ui.view==="rutinas"){ openRoutine(null); return; }
+  if(ui.view==="hechas") go("hoy");
+  window.scrollTo({top:0,behavior:"smooth"});
+  setTimeout(()=>{ const i=$("#qa-in"); if(i) i.focus(); }, 60);
+});
+document.addEventListener("keydown", e=>{
+  if(e.key==="Escape") closeSheet();
+  const tag = (e.target.tagName||"").toLowerCase();
+  if(tag==="input"||tag==="textarea"||e.metaKey||e.ctrlKey||$(".overlay")) return;
+  if(e.key==="n"||e.key==="N"){ const i=$("#qa-in"); if(i){ e.preventDefault(); i.focus(); } }
+  if(e.key==="/"){ e.preventDefault(); go("todas"); setTimeout(()=>$("#search-in").focus(),30); }
+  const idx = ["1","2","3","4","5"].indexOf(e.key);
+  if(idx>-1) go(VIEWS[idx].id);
+});
+
+/* ---------------- hoja (modal) ---------------- */
+function openSheet(html){
+  closeSheet(true);
+  const ov = document.createElement("div");
+  ov.className = "overlay";
+  ov.innerHTML = `<div class="sheet">${html}</div>`;
+  ov.addEventListener("mousedown", e=>{ if(e.target===ov) closeSheet(); });
+  document.body.appendChild(ov);
+  return ov.querySelector(".sheet");
+}
+function closeSheet(silent){
+  const ov = $(".overlay");
+  if(ov){ ov.remove(); if(!silent) render(); }
 }
 
-async function afterLogin(){
-  const { data, error } = await sb.auth.getSession();
-  if(error) throw error;
-  state.session = data.session;
-  state.user = data.session ? data.session.user : null;
-  if(!state.user){
-    throw new Error("Supabase inició sesión pero no devolvió una sesión. Revisa la confirmación del correo.");
-  }
-
-  // Entrar a la aplicación NO debe depender de que las tablas estén creadas
-  // o de que una consulta de datos tarde. Mostramos la interfaz inmediatamente.
-  renderRoot();
-  startNotificationLoop();
-  setupRealtime();
-
-  // Cargamos los datos después de mostrar la aplicación. Si alguna tabla aún
-  // no existe, fetchAllTables usa la caché y no bloquea el acceso.
-  try{
-    await fetchAllTables();
-    await ensureOccurrencesForRange(addDays(todayStr(),-1), addDays(todayStr(),14));
-    render();
-  }catch(e){
-    console.warn("Carga inicial de datos:", e);
-    render();
-  }
+/* ---------- detalle de tarea (guarda solo) ---------- */
+function openTask(id){
+  const t = getTask(id); if(!t) return;
+  const sh = openSheet("");
+  const draw = () => {
+    const t0 = today();
+    const quick = [
+      ["Hoy", t0], ["Mañana", addDays(t0,1)],
+      ["Sábado", addDays(t0, ((6-parseD(t0).getDay()+7)%7)||7)],
+      ["Próx. lunes", addDays(t0, ((1-parseD(t0).getDay()+7)%7)||7)],
+      ["Sin fecha", ""],
+    ];
+    sh.innerHTML = `
+      <div class="sh-top">
+        <button class="chk ${t.done?"on":"p"+(t.priority||0)}" id="s-done">${ic("check")}</button>
+        <input class="title" id="s-title" value="${esc(t.title)}">
+        <button class="icon-btn" id="s-close">${ic("x")}</button>
+      </div>
+      <div class="sh-body">
+        <div class="fld"><label>${ic("cal","sm")}Fecha</label>
+          <div class="chips" style="margin-bottom:10px">${quick.map(([l,v])=>`<button class="chip ${(t.date||"")===v?"on":""}" data-d="${v}">${l}</button>`).join("")}</div>
+          <div class="two"><input type="date" id="s-date" value="${t.date||""}"><input type="time" id="s-time" value="${t.time||""}"></div>
+        </div>
+        <div class="fld"><label>Prioridad</label>
+          <div class="chips">${[3,2,1,0].map(p=>`<button class="chip ${(t.priority||0)===p?"on":""}" data-p="${p}">${p?`<span style="color:var(--p${p})">●</span> `:""}${PRIO[p]}</button>`).join("")}</div>
+        </div>
+        <div class="fld"><label>Categoría</label>
+          <div class="chips">${[["trabajo","Trabajo"],["personal","Personal"],["","Ninguna"]].map(([v,l])=>`<button class="chip ${(t.cat||"")===v?"on":""}" data-c="${v}">${l}</button>`).join("")}</div>
+        </div>
+        <div class="fld"><label>${ic("sub","sm")}Subtareas</label>
+          <div class="subs">
+            ${(t.subtasks||[]).map(s=>`<div class="sub ${s.done?"d":""}"><button class="chk ${s.done?"on":""}" data-st="${s.id}">${ic("check")}</button><span>${esc(s.t)}</span><button class="x" data-sx="${s.id}">${ic("x","sm")}</button></div>`).join("")}
+            <div class="sub"><span style="color:var(--faint);display:flex">${ic("plus","sm")}</span><input id="s-newsub" placeholder="Agregar paso y Enter"></div>
+          </div>
+        </div>
+        <div class="fld"><label>${ic("notes","sm")}Notas</label><textarea id="s-notes" placeholder="Detalles, teléfonos, links…">${esc(t.notes||"")}</textarea></div>
+      </div>
+      <div class="sh-foot">
+        <button class="btn danger" id="s-del">${ic("trash")}Eliminar</button>
+        <span class="sp"></span>
+        <button class="btn pri" id="s-ok">Listo</button>
+      </div>`;
+    const q = s => sh.querySelector(s);
+    q("#s-close").onclick = ()=>closeSheet();
+    q("#s-ok").onclick = ()=>closeSheet();
+    q("#s-title").oninput = e=>{ t.title = e.target.value; save(); };
+    q("#s-title").onblur = e=>{ if(!t.title.trim()){ t.title = "Sin título"; save(); } };
+    q("#s-notes").oninput = e=>{ t.notes = e.target.value; save(); };
+    q("#s-date").onchange = e=>{ t.date = e.target.value || null; save(); draw(); };
+    q("#s-time").onchange = e=>{ t.time = e.target.value || null; save(); };
+    q("#s-done").onclick = ()=>{ t.done = !t.done; t.doneAt = t.done ? new Date().toISOString() : null; save(); draw(); };
+    sh.querySelectorAll("[data-d]").forEach(b=>b.onclick=()=>{ t.date = b.dataset.d || null; if(!t.date) t.time = null; save(); draw(); });
+    sh.querySelectorAll("[data-p]").forEach(b=>b.onclick=()=>{ t.priority = +b.dataset.p; save(); draw(); });
+    sh.querySelectorAll("[data-c]").forEach(b=>b.onclick=()=>{ t.cat = b.dataset.c || null; save(); draw(); });
+    sh.querySelectorAll("[data-st]").forEach(b=>b.onclick=()=>{ const s=t.subtasks.find(x=>x.id===b.dataset.st); s.done=!s.done; save(); draw(); });
+    sh.querySelectorAll("[data-sx]").forEach(b=>b.onclick=()=>{ t.subtasks=t.subtasks.filter(x=>x.id!==b.dataset.sx); save(); draw(); });
+    q("#s-newsub").onkeydown = e=>{
+      if(e.key==="Enter" && e.target.value.trim()){
+        e.preventDefault();
+        t.subtasks = t.subtasks || [];
+        t.subtasks.push({id:uid(), t:e.target.value.trim(), done:false});
+        save(); draw(); sh.querySelector("#s-newsub").focus();
+      }
+    };
+    q("#s-del").onclick = ()=>{
+      const i = db.tasks.indexOf(t);
+      db.tasks.splice(i,1); save(); closeSheet();
+      toast("Tarea eliminada", ()=>{ db.tasks.splice(i,0,t); save(); render(); });
+    };
+  };
+  draw();
 }
 
-function shellHtml(){
-  return `
-  <div id="app">
-    <nav id="sidebar">
-      <div class="brand"><div class="logo">M</div><div class="name">MIDPLANER</div></div>
-      <div id="nav-list"></div>
-      <div style="margin-top:8px;">
-        <button class="btn primary" id="fab-desktop" style="width:100%;justify-content:center;">+ Capturar</button>
-      </div>
-      <div class="foot">
-        <div class="sync-pill" id="sync-badge-1"></div>
-        <div class="user-row"><span id="user-email" style="flex:1;overflow:hidden;text-overflow:ellipsis;"></span><button id="btn-logout" title="Cerrar sesión">⏻</button></div>
-      </div>
-    </nav>
-    <main id="main">
-      <div class="topbar">
-        <div><h1 id="view-title"></h1><div class="sub" id="view-sub"></div></div>
-        <div class="top-actions">
-          <button class="btn icon" id="btn-search" title="Buscar">🔎</button>
+/* ---------- rutina (crear / editar) ---------- */
+function openRoutine(id){
+  const orig = id ? db.routines.find(r=>r.id===id) : null;
+  const r = orig ? JSON.parse(JSON.stringify(orig)) : {id:uid(), name:"", time:"", freq:"lunvie", days:[1,2,3,4,5], cat:"trabajo", notify:false, active:true, start:today(), log:{}};
+  const sh = openSheet("");
+  const draw = () => {
+    sh.innerHTML = `
+      <div class="sh-top"><h3>${orig?"Editar rutina":"Nueva rutina"}</h3><button class="icon-btn" id="r-close">${ic("x")}</button></div>
+      <div class="sh-body">
+        <div class="fld"><label>Nombre</label><input type="text" id="r-name" value="${esc(r.name)}" placeholder="Ej. Revisar ventas del día"></div>
+        <div class="fld"><label>Se repite</label>
+          <div class="chips">${Object.entries(FREQ).map(([k,l])=>`<button class="chip ${r.freq===k?"on":""}" data-f="${k}">${l}</button>`).join("")}</div>
+          ${r.freq==="dias" ? `<div class="days" style="margin-top:12px">${[1,2,3,4,5,6,0].map(i=>`<button class="dchip ${(r.days||[]).includes(i)?"on":""}" data-dw="${i}">${DOW_SHORT[i]}</button>`).join("")}</div>` : ""}
+          ${r.freq==="mensual" ? `<div class="note" style="margin-top:10px">Se repite cada mes el día ${parseD(r.start).getDate()} (según la fecha de inicio).</div>` : ""}
+        </div>
+        <div class="two">
+          <div class="fld"><label>Hora</label><input type="time" id="r-time" value="${r.time||""}"></div>
+          <div class="fld"><label>Empieza</label><input type="date" id="r-start" value="${r.start||today()}"></div>
+        </div>
+        <div class="fld"><label>Categoría</label>
+          <div class="chips">${[["trabajo","Trabajo"],["personal","Personal"],["","Ninguna"]].map(([v,l])=>`<button class="chip ${(r.cat||"")===v?"on":""}" data-c="${v}">${l}</button>`).join("")}</div>
+        </div>
+        <div class="fld">
+          <div class="switch"><div class="lbl">Recordatorio<small>Aviso a la hora indicada mientras MIDPLANER esté abierto</small></div><button class="tg ${r.notify?"on":""}" id="r-notify"></button></div>
+          <div class="switch"><div class="lbl">Activa<small>Pausa la rutina sin borrarla</small></div><button class="tg ${r.active!==false?"on":""}" id="r-active"></button></div>
         </div>
       </div>
-      <div id="view-content"></div>
-    </main>
-  </div>
-  <nav id="bottomnav"></nav>
-  <button id="fab">+</button>
-  `;
-}
-
-function bindShell(){
-  document.getElementById("btn-logout").onclick = doSignOut;
-  document.getElementById("user-email").textContent = state.user.email || "";
-  document.getElementById("btn-search").onclick = openSearch;
-  document.getElementById("fab").onclick = openQuickCapture;
-  document.getElementById("fab-desktop").onclick = openQuickCapture;
-  renderNav();
-}
-
-function renderNav(){
-  const list = document.getElementById("nav-list");
-  if(list){
-    list.innerHTML = NAV.map(n=>{
-      let badge = "";
-      if(n.id==="hoy"){ const c = tasksOverdue().length; if(c>0) badge = `<span class="badge">${c}</span>`; }
-      if(n.id==="inbox"){ const c = state.data.inbox_items.length; if(c>0) badge = `<span class="badge">${c}</span>`; }
-      return `<div class="nav-item ${state.view===n.id?'active':''}" data-view="${n.id}"><span class="ic">${n.ic}</span><span>${n.label}</span>${badge}</div>`;
-    }).join("");
-    list.querySelectorAll(".nav-item").forEach(el=>{
-      el.onclick = ()=>{ state.view = el.dataset.view; render(); };
-    });
-  }
-  const bn = document.getElementById("bottomnav");
-  if(bn){
-    const items = [
-      {id:"hoy",ic:"☀️",label:"Hoy"},
-      {id:"inbox",ic:"📥",label:"Inbox"},
-      {id:"tareas",ic:"📋",label:"Tareas"},
-      {id:"rutinas",ic:"🔁",label:"Rutinas"},
-      {id:"mas",ic:"☰",label:"Más"},
-    ];
-    bn.innerHTML = items.map(n=>`<div class="bn-item ${state.view===n.id?'active':''}" data-view="${n.id}"><span class="ic">${n.ic}</span><span>${n.label}</span></div>`).join("");
-    bn.querySelectorAll(".bn-item").forEach(el=>{
-      el.onclick = ()=>{
-        if(el.dataset.view==="mas"){ openMoreSheet(); return; }
-        state.view = el.dataset.view; render();
-      };
-    });
-  }
-  renderSyncBadges();
-}
-
-function renderSyncBadges(){
-  const map = { synced: ["var(--ok)","🟢 Sincronizado"], syncing: ["var(--warn)","🟡 Sincronizando…"], offline: ["var(--danger)","🔴 Sin conexión"] };
-  const [color,label] = map[state.syncStatus] || map.synced;
-  document.querySelectorAll(".sync-badge-slot").forEach(el=>{
-    el.innerHTML = `<span class="sync-badge"><span class="dot" style="background:${color}"></span>${label}</span>`;
-  });
-  const b1 = document.getElementById("sync-badge-1");
-  if(b1) b1.innerHTML = `<span class="dot" style="background:${color}"></span>${label}`;
-}
-
-function openMoreSheet(){
-  const rest = NAV.filter(n=>!["hoy","inbox","tareas","rutinas"].includes(n.id));
-  openSheet("Más", `<div class="quick-opts">${rest.map(n=>`<div class="quick-opt" data-view="${n.id}"><span class="ic">${n.ic}</span>${n.label}</div>`).join("")}</div>`, (el)=>{
-    el.querySelectorAll(".quick-opt").forEach(o=>{ o.onclick = ()=>{ state.view = o.dataset.view; closeSheet(); render(); }; });
-  });
-}
-
-/* ================= RENDER DISPATCH ================= */
-function render(){
-  if(!state.user) return;
-  renderNav();
-  const titles = {
-    hoy:["Hoy",""], inbox:["Inbox","Captura rápida, decide después"], tareas:["Tareas",""],
-    rutinas:["Rutinas",""], proyectos:["Proyectos",""], esperando:["Esperando","Cosas que dependen de otros"],
-    ideas:["Ideas",""], calendario:["Calendario",""], control:["Centro de control",""], config:["Configuración",""]
-  };
-  const t = titles[state.view] || ["MIDPLANER",""];
-  document.getElementById("view-title").textContent = t[0];
-  document.getElementById("view-sub").textContent = state.view==="hoy" ? longDateToday() : t[1];
-  const content = document.getElementById("view-content");
-  const renderers = {
-    hoy: renderHoy, inbox: renderInbox, tareas: renderTareas, rutinas: renderRutinas,
-    proyectos: renderProyectos, esperando: renderEsperando, ideas: renderIdeas,
-    calendario: renderCalendario, control: renderControl, config: renderConfig
-  };
-  content.innerHTML = (renderers[state.view] || renderHoy)();
-  bindViewEvents();
-}
-
-/* ================= VISTA: HOY ================= */
-function renderHoy(){
-  const t = todayStr();
-  const prios = tasksPriorityHighToday();
-  const rutinas = occurrencesOn(t);
-  const tareas = tasksToday();
-  const vencidas = tasksOverdue();
-  const seguimientos = waitingFollowupsToday();
-
-  return `
-  <div class="hero"><div class="greet">${greeting()}</div></div>
-
-  ${section("🎯 Prioridades de hoy", prios.length, prios.length ? prios.map(taskRowHtml).join("") : emptyHtml("Sin tareas de alta prioridad para hoy."))}
-  ${section("🔁 Rutinas de hoy", rutinas.length, rutinas.length ? rutinas.map(x=>occRowHtml(x.occ,x.routine)).join("") : emptyHtml("No hay rutinas programadas para hoy."))}
-  ${section("📋 Tareas de hoy", tareas.length, tareas.length ? tareas.map(taskRowHtml).join("") : emptyHtml("No tienes tareas para hoy. Buen momento para revisar tu Inbox."))}
-  ${section("⏰ Vencidas", vencidas.length, vencidas.length ? vencidas.map(taskRowHtml).join("") : emptyHtml("Nada vencido. 🎉"))}
-  ${section("⏳ Seguimientos", seguimientos.length, seguimientos.length ? seguimientos.map(waitingRowHtml).join("") : emptyHtml("Sin seguimientos pendientes hoy."))}
-  `;
-}
-function section(title, count, bodyHtml){
-  return `<div class="section"><div class="section-head"><h2>${title}<span class="cnt">${count?`(${count})`:""}</span></h2></div><div class="list">${bodyHtml}</div></div>`;
-}
-function emptyHtml(msg){ return `<div class="empty">${msg}</div>`; }
-
-function taskRowHtml(t){
-  const overdue = t.status!=="COMPLETADA" && isPast(t.date, null) && t.date && t.date < todayStr();
-  const done = t.status==="COMPLETADA";
-  return `<div class="item-row" data-open="task" data-id="${t.id}">
-    <div class="check ${done?'done':''}" data-toggle-task="${t.id}">${done?'✓':''}</div>
-    <div class="body">
-      <div class="title ${done?'done':''}">${escapeHtml(t.title)}</div>
-      <div class="meta">
-        ${t.priority?`<span class="tag prio-${t.priority.toLowerCase()}">${t.priority}</span>`:""}
-        ${t.category?`<span class="tag cat-${t.category.toLowerCase()}">${t.category}</span>`:""}
-        ${t.date?`<span class="tag ${overdue?'overdue':'muted'}">${overdue?'Venció ':''}${humanDate(t.date)}${t.time?' · '+t.time:''}</span>`:""}
-      </div>
-    </div>
-    <div class="chev">›</div>
-  </div>`;
-}
-function occRowHtml(occ, routine){
-  const done = occ.status==="COMPLETADA";
-  return `<div class="item-row" data-open="routine" data-id="${routine.id}">
-    <div class="check ${done?'done':''}" data-toggle-occ="${occ.id}">${done?'✓':''}</div>
-    <div class="body">
-      <div class="title ${done?'done':''}">${escapeHtml(routine.name)}</div>
-      <div class="meta">
-        ${routine.category?`<span class="tag cat-${routine.category.toLowerCase()}">${routine.category}</span>`:""}
-        ${routine.time?`<span class="tag muted">${routine.time}</span>`:""}
-      </div>
-    </div>
-    <div class="chev">›</div>
-  </div>`;
-}
-function waitingRowHtml(w){
-  return `<div class="item-row" data-open="waiting" data-id="${w.id}">
-    <div class="body" style="margin-left:2px;">
-      <div class="title">${escapeHtml(w.what)}</div>
-      <div class="meta">
-        <span class="tag info-tag" style="background:var(--info-bg);color:var(--info);">${escapeHtml(w.person||"—")}</span>
-        <span class="tag overdue">⏳ Dar seguimiento</span>
-      </div>
-    </div>
-    <div class="chev">›</div>
-  </div>`;
-}
-
-/* ================= VISTA: INBOX ================= */
-function renderInbox(){
-  const items = state.data.inbox_items;
-  return `
-  <div class="section">
-    <button class="btn primary" id="btn-capture-inbox">+ Capturar</button>
-  </div>
-  ${section("Bandeja", items.length, items.length ? items.map(inboxRowHtml).join("") : emptyHtml("Tu inbox está vacío. Captura cualquier pendiente sin decidir qué es todavía."))}
-  `;
-}
-function inboxRowHtml(i){
-  return `<div class="item-row" data-open="inbox" data-id="${i.id}">
-    <div class="body"><div class="title">${escapeHtml(i.title)}</div>
-    <div class="meta"><span class="tag muted">${new Date(i.created_at).toLocaleDateString('es-MX')}</span></div></div>
-    <div class="chev">›</div>
-  </div>`;
-}
-
-/* ================= VISTA: TAREAS ================= */
-function renderTareas(){
-  let list = [...state.data.tasks];
-  const f = state.filters.tareas;
-  const t = todayStr();
-  if(f==="PENDIENTES") list = list.filter(x=>x.status!=="COMPLETADA");
-  if(f==="COMPLETADAS") list = list.filter(x=>x.status==="COMPLETADA");
-  if(f==="VENCIDAS") list = list.filter(x=>x.status!=="COMPLETADA" && x.date && x.date<t);
-  if(f==="ALTA PRIORIDAD") list = list.filter(x=>x.priority==="ALTA");
-  list.sort((a,b)=> (a.date||"9999").localeCompare(b.date||"9999"));
-  return `
-  <div class="chip-group" style="margin-bottom:16px;">
-    ${["TODAS","PENDIENTES","COMPLETADAS","VENCIDAS","ALTA PRIORIDAD"].map(c=>`<div class="chip ${f===c?'active':''}" data-filter-tareas="${c}">${c}</div>`).join("")}
-  </div>
-  <button class="btn primary" id="btn-new-task" style="margin-bottom:14px;">+ Nueva tarea</button>
-  <div class="list">${list.length ? list.map(taskRowHtml).join("") : emptyHtml("No hay tareas con este filtro.")}</div>
-  `;
-}
-
-/* ================= VISTA: RUTINAS ================= */
-function renderRutinas(){
-  let list = [...state.data.routines];
-  const f = state.filters.rutinas;
-  if(f==="TRABAJO") list = list.filter(r=>r.category==="TRABAJO");
-  if(f==="PERSONAL") list = list.filter(r=>r.category==="PERSONAL");
-  if(f==="ACTIVAS") list = list.filter(r=>r.active);
-  if(f==="INACTIVAS") list = list.filter(r=>!r.active);
-  return `
-  <div class="chip-group" style="margin-bottom:16px;">
-    ${["TODAS","TRABAJO","PERSONAL","ACTIVAS","INACTIVAS"].map(c=>`<div class="chip ${f===c?'active':''}" data-filter-rutinas="${c}">${c}</div>`).join("")}
-  </div>
-  <button class="btn primary" id="btn-new-routine" style="margin-bottom:14px;">+ Nueva rutina</button>
-  <div class="list">${list.length ? list.map(routineRowHtml).join("") : emptyHtml("No hay rutinas con este filtro.")}</div>
-  `;
-}
-function routineRowHtml(r){
-  return `<div class="item-row" data-open="routine" data-id="${r.id}">
-    <div class="body"><div class="title">${escapeHtml(r.name)}</div>
-    <div class="meta">
-      <span class="tag cat-${(r.category||'').toLowerCase()}">${r.category||""}</span>
-      <span class="tag muted">${freqLabel(r)}</span>
-      ${r.time?`<span class="tag muted">${r.time}</span>`:""}
-      ${!r.active?`<span class="tag muted">Inactiva</span>`:""}
-      ${r.notify?`<span class="tag muted">🔔</span>`:""}
-    </div></div>
-    <div class="chev">›</div>
-  </div>`;
-}
-function freqLabel(r){
-  const map = {DIARIA:"Diaria", LUNES_A_VIERNES:"Lun-Vie", SEMANAL:"Semanal", CADA_2_SEMANAS:"Cada 2 semanas", MENSUAL:"Mensual", PERSONALIZADA:"Personalizada"};
-  return map[r.frequency] || r.frequency;
-}
-
-/* ================= VISTA: PROYECTOS ================= */
-function renderProyectos(){
-  const list = state.data.projects;
-  return `
-  <button class="btn primary" id="btn-new-project" style="margin-bottom:14px;">+ Nuevo proyecto</button>
-  <div class="list">${list.length ? list.map(projectRowHtml).join("") : emptyHtml("Aún no tienes proyectos.")}</div>
-  `;
-}
-function projectRowHtml(p){
-  const prog = projectProgress(p);
-  return `<div class="item-row proj-row" style="cursor:pointer;flex-direction:column;align-items:stretch;" data-open="project" data-id="${p.id}">
-    <div style="display:flex;justify-content:space-between;width:100%;">
-      <div class="title">${escapeHtml(p.name)}</div>
-      <span class="tag muted">${p.status}</span>
-    </div>
-    <div class="meta"><span class="tag cat-${(p.category||'').toLowerCase()}">${p.category||""}</span></div>
-    <div class="bar-track"><div class="bar-fill" style="width:${prog.pct}%"></div></div>
-    <div style="font-size:12px;color:var(--text-dim);margin-top:4px;">${prog.done}/${prog.total} tareas completadas</div>
-  </div>`;
-}
-
-/* ================= VISTA: ESPERANDO ================= */
-function renderEsperando(){
-  const list = state.data.waiting_items;
-  return `
-  <button class="btn primary" id="btn-new-waiting" style="margin-bottom:14px;">+ Nuevo esperando</button>
-  <div class="list">${list.length ? list.map(waitingFullRowHtml).join("") : emptyHtml("No estás esperando nada de nadie.")}</div>
-  `;
-}
-function waitingFullRowHtml(w){
-  const t = todayStr();
-  const due = w.followup_date && w.followup_date<=t && (w.status==="ESPERANDO"||w.status==="DAR SEGUIMIENTO");
-  return `<div class="item-row" data-open="waiting" data-id="${w.id}">
-    <div class="body"><div class="title">${escapeHtml(w.what)}</div>
-    <div class="meta">
-      <span class="tag muted">${escapeHtml(w.person||"")}${w.company?" · "+escapeHtml(w.company):""}</span>
-      <span class="tag ${due?'overdue':'muted'}">${w.status}</span>
-      ${w.followup_date?`<span class="tag muted">Seguimiento: ${humanDate(w.followup_date)}</span>`:""}
-    </div></div>
-    <div class="chev">›</div>
-  </div>`;
-}
-
-/* ================= VISTA: IDEAS ================= */
-function renderIdeas(){
-  const list = state.data.ideas;
-  return `
-  <button class="btn primary" id="btn-new-idea" style="margin-bottom:14px;">+ Nueva idea</button>
-  <div class="list">${list.length ? list.map(ideaRowHtml).join("") : emptyHtml("Todavía no has guardado ideas.")}</div>
-  `;
-}
-function ideaRowHtml(i){
-  return `<div class="item-row" data-open="idea" data-id="${i.id}">
-    <div class="body"><div class="title">${escapeHtml(i.title)}</div>
-    <div class="meta">${i.category?`<span class="tag muted">${escapeHtml(i.category)}</span>`:""}<span class="tag muted">${humanDate(i.date||"")}</span></div></div>
-    <div class="chev">›</div>
-  </div>`;
-}
-
-/* ================= VISTA: CALENDARIO ================= */
-function renderCalendario(){
-  const {y,m} = state.calMonth;
-  const first = new Date(y,m,1);
-  const startDow = first.getDay();
-  const daysInMonth = new Date(y,m+1,0).getDate();
-  const monthLabel = first.toLocaleDateString('es-MX',{month:'long', year:'numeric'});
-  let cells = "";
-  const dows = ["D","L","M","M","J","V","S"];
-  cells += dows.map(d=>`<div class="cal-dow">${d}</div>`).join("");
-  const totalCells = Math.ceil((startDow+daysInMonth)/7)*7;
-  for(let i=0;i<totalCells;i++){
-    const dayNum = i - startDow + 1;
-    let dateObj, other=false;
-    if(dayNum<1){ dateObj = new Date(y,m,dayNum); other=true; }
-    else if(dayNum>daysInMonth){ dateObj = new Date(y,m,dayNum); other=true; }
-    else { dateObj = new Date(y,m,dayNum); }
-    const ds = fmtDateISO(dateObj);
-    const isToday = ds===todayStr();
-    const isSel = ds===state.calSelected;
-    const hasItems = state.data.tasks.some(t=>t.date===ds) || occurrencesOn(ds).length>0 || state.data.waiting_items.some(w=>w.followup_date===ds);
-    cells += `<div class="cal-day ${other?'other':''} ${isToday?'today':''} ${isSel?'selected':''}" data-cal-day="${ds}">
-      <span>${dateObj.getDate()}</span>${hasItems?'<div class="dots"><span></span></div>':''}
-    </div>`;
-  }
-  const sel = state.calSelected;
-  const dayTasks = state.data.tasks.filter(t=>t.date===sel);
-  const dayOcc = occurrencesOn(sel);
-  const dayWaiting = state.data.waiting_items.filter(w=>w.followup_date===sel);
-  return `
-  <div class="cal-head">
-    <button class="btn sm" id="cal-prev">‹</button>
-    <div style="font-weight:700;text-transform:capitalize;">${monthLabel}</div>
-    <button class="btn sm" id="cal-next">›</button>
-  </div>
-  <div class="cal-grid">${cells}</div>
-  <hr class="sep">
-  <div class="section-head"><h2>${humanDate(sel)}</h2></div>
-  <div class="list">
-    ${dayTasks.map(taskRowHtml).join("")}
-    ${dayOcc.map(x=>occRowHtml(x.occ,x.routine)).join("")}
-    ${dayWaiting.map(waitingRowHtml).join("")}
-    ${(dayTasks.length+dayOcc.length+dayWaiting.length)===0 ? emptyHtml("Nada programado este día.") : ""}
-  </div>
-  `;
-}
-
-/* ================= VISTA: CENTRO DE CONTROL ================= */
-function complianceRate(fromStr, toStr){
-  let total=0, done=0;
-  state.data.routine_occurrences.forEach(o=>{
-    if(o.date>=fromStr && o.date<=toStr){ total++; if(o.status==="COMPLETADA") done++; }
-  });
-  return total ? Math.round(done/total*100) : 0;
-}
-function renderControl(){
-  const t = todayStr();
-  const pendientes = state.data.tasks.filter(x=>x.status!=="COMPLETADA").length;
-  const vencidas = tasksOverdue().length;
-  const completadasHoy = state.data.tasks.filter(x=>x.status==="COMPLETADA" && x.completed_at && x.completed_at.slice(0,10)===t).length;
-  const rutinasHoy = occurrencesOn(t).length;
-  const rutinasCompletadasHoy = occurrencesOn(t).filter(x=>x.occ.status==="COMPLETADA").length;
-  const proyectosActivos = state.data.projects.filter(p=>p.status==="ACTIVO").length;
-  const seguimientosPend = state.data.waiting_items.filter(w=>w.status==="ESPERANDO"||w.status==="DAR SEGUIMIENTO").length;
-  const semanaInicio = addDays(t, -6);
-  const mesInicio = addDays(t, -29);
-  return `
-  <div class="stat-grid" style="margin-bottom:24px;">
-    ${statCard(pendientes,"Tareas pendientes")}
-    ${statCard(vencidas,"Tareas vencidas")}
-    ${statCard(completadasHoy,"Completadas hoy")}
-    ${statCard(rutinasHoy+" ("+rutinasCompletadasHoy+")","Rutinas hoy (hechas)")}
-    ${statCard(proyectosActivos,"Proyectos activos")}
-    ${statCard(seguimientosPend,"Elementos esperando")}
-  </div>
-  <div class="section-head"><h2>Cumplimiento de rutinas</h2></div>
-  <div class="list">
-    ${complianceRow("Hoy", complianceRate(t,t))}
-    ${complianceRow("Esta semana", complianceRate(semanaInicio,t))}
-    ${complianceRow("Este mes", complianceRate(mesInicio,t))}
-  </div>
-  `;
-}
-function statCard(n,l){ return `<div class="stat-card"><div class="n">${n}</div><div class="l">${l}</div></div>`; }
-function complianceRow(label, pct){
-  return `<div class="card"><div style="display:flex;justify-content:space-between;font-size:13.5px;font-weight:600;"><span>${label}</span><span>${pct}%</span></div><div class="bar-track"><div class="bar-fill" style="width:${pct}%"></div></div></div>`;
-}
-
-/* ================= VISTA: CONFIGURACIÓN ================= */
-function renderConfig(){
-  const theme = localStorage.getItem(LS_THEME) || "system";
-  const notifEnabled = localStorage.getItem(LS_NOTIF) === "1";
-  return `
-  <div class="section">
-    <div class="section-head"><h2>Apariencia</h2></div>
-    <div class="chip-group">
-      <div class="chip ${theme==='light'?'active':''}" data-theme-set="light">Claro</div>
-      <div class="chip ${theme==='dark'?'active':''}" data-theme-set="dark">Oscuro</div>
-      <div class="chip ${theme==='system'?'active':''}" data-theme-set="system">Sistema</div>
-    </div>
-  </div>
-
-  <div class="section">
-    <div class="section-head"><h2>Notificaciones</h2></div>
-    <div class="card">
-      <p style="font-size:13.5px;margin-top:0;">Activa notificaciones del navegador para tus rutinas mientras MIDPLANER esté abierto.</p>
-      <button class="btn ${notifEnabled?'':'primary'}" id="btn-notif-toggle">${notifEnabled ? "Desactivar notificaciones" : "Activar notificaciones"}</button>
-      <div class="inline-note" style="margin-top:12px;">Las notificaciones push reales (con la app cerrada) requieren un Service Worker registrado como archivo aparte. Como MIDPLANER es un único index.html, esto no está disponible: las notificaciones solo funcionan mientras esta pestaña está abierta en tu navegador.</div>
-    </div>
-  </div>
-
-  <div class="section">
-    <div class="section-head"><h2>Datos de demostración</h2></div>
-    <div class="card" style="display:flex;gap:10px;flex-wrap:wrap;">
-      <button class="btn" id="btn-demo-create">Crear datos de demostración</button>
-      <button class="btn danger" id="btn-demo-delete">Eliminar datos de demostración</button>
-    </div>
-  </div>
-
-  <div class="section">
-    <div class="section-head"><h2>Instalación</h2></div>
-    <div class="card steps-list">
-      ${installStep(1,"Crea un proyecto en supabase.com si aún no lo tienes.")}
-      ${installStep(2,"Copia el Project URL desde Project Settings → API.")}
-      ${installStep(3,"Copia tu clave Publishable/Anon key (nunca la Service Role Key).")}
-      ${installStep(4,"Ejecuta el SQL de abajo una sola vez en el SQL Editor de Supabase.")}
-      ${installStep(5,"Crea tu usuario desde la pantalla de inicio de sesión de MIDPLANER (Crear cuenta).")}
-      ${installStep(6,"Abre MIDPLANER desde tu PC y tu celular con la misma cuenta: los datos viven en Supabase, no en tu equipo.")}
-    </div>
-    <div class="inline-note" style="margin-top:10px;">Algunas capacidades (notificaciones, sesión persistente completa) requieren que abras MIDPLANER por https:// o http://localhost — no funcionan del todo abriendo el archivo directamente como file://.</div>
-  </div>
-
-  <div class="section">
-    <div class="section-head"><h2>Base de datos — SQL de instalación</h2></div>
-    <p class="hint">Ejecuta esto una sola vez en Supabase → SQL Editor. Crea las tablas, índices y políticas de seguridad (RLS).</p>
-    <button class="btn primary" id="btn-copy-sql" style="margin-bottom:10px;">Copiar SQL</button>
-    <code class="mono" id="sql-block">${escapeHtml(SQL_SETUP)}</code>
-  </div>
-
-  <div class="section">
-    <div class="section-head"><h2>Conexión Supabase</h2></div>
-    <div class="card">
-      <div class="field"><label>Project URL</label><input id="cfg2-url" type="text" value="${escapeHtml(getEffectiveConfig().url)}"></div>
-      <div class="field"><label>Publishable / Anon Key</label><input id="cfg2-key" type="text" value="${escapeHtml(getEffectiveConfig().key)}" placeholder="sb_publishable_..."></div>
-      <div style="display:flex;gap:8px;flex-wrap:wrap;">
-        <button class="btn primary" id="cfg2-save">Guardar y recargar</button>
-        <button class="btn" id="cfg2-test">Probar conexión ahora</button>
-      </div>
-      <div id="cfg2-test-result" style="margin-top:10px;"></div>
-      <div class="inline-note" style="margin-top:10px;">"Probar conexión" hace una llamada real a tu proyecto Supabase con la clave guardada y muestra la respuesta exacta (código HTTP y mensaje), para diagnosticar "Invalid API key" o "Failed to fetch" sin adivinar.</div>
-    </div>
-  </div>
-  `;
-}
-function installStep(n, text){ return `<div class="step-num"><div class="n">${n}</div><div class="t">${text}</div></div>`; }
-
-/* ================= SQL DE INSTALACIÓN ================= */
-const SQL_SETUP = `-- =========================================================
--- MIDPLANER — SQL de instalación (ejecutar una sola vez)
--- =========================================================
-
-create extension if not exists "pgcrypto";
-
--- ---------- profiles ----------
-create table if not exists public.profiles (
-  id uuid primary key references auth.users(id) on delete cascade,
-  email text,
-  created_at timestamptz default now()
-);
-alter table public.profiles enable row level security;
-create policy "profiles_select_own" on public.profiles for select using (auth.uid() = id);
-create policy "profiles_insert_own" on public.profiles for insert with check (auth.uid() = id);
-create policy "profiles_update_own" on public.profiles for update using (auth.uid() = id);
-
--- ---------- tasks ----------
-create table if not exists public.tasks (
-  id uuid primary key default gen_random_uuid(),
-  user_id uuid not null references auth.users(id) on delete cascade,
-  title text not null,
-  description text,
-  category text check (category in ('TRABAJO','PERSONAL')),
-  project_id uuid,
-  priority text check (priority in ('ALTA','MEDIA','BAJA')),
-  date date,
-  time time,
-  status text not null default 'PENDIENTE' check (status in ('PENDIENTE','EN PROGRESO','ESPERANDO','COMPLETADA')),
-  completed_at timestamptz,
-  is_demo boolean default false,
-  created_at timestamptz default now()
-);
-create index if not exists tasks_user_idx on public.tasks(user_id);
-create index if not exists tasks_date_idx on public.tasks(date);
-alter table public.tasks enable row level security;
-create policy "tasks_all_own" on public.tasks for all using (auth.uid() = user_id) with check (auth.uid() = user_id);
-
--- ---------- routines ----------
-create table if not exists public.routines (
-  id uuid primary key default gen_random_uuid(),
-  user_id uuid not null references auth.users(id) on delete cascade,
-  name text not null,
-  description text,
-  category text check (category in ('TRABAJO','PERSONAL')),
-  time time,
-  frequency text check (frequency in ('DIARIA','LUNES_A_VIERNES','SEMANAL','CADA_2_SEMANAS','MENSUAL','PERSONALIZADA')),
-  custom_days jsonb,
-  start_date date not null default current_date,
-  end_date date,
-  active boolean default true,
-  notify boolean default false,
-  is_demo boolean default false,
-  created_at timestamptz default now()
-);
-create index if not exists routines_user_idx on public.routines(user_id);
-alter table public.routines enable row level security;
-create policy "routines_all_own" on public.routines for all using (auth.uid() = user_id) with check (auth.uid() = user_id);
-
--- ---------- routine_occurrences ----------
-create table if not exists public.routine_occurrences (
-  id uuid primary key default gen_random_uuid(),
-  user_id uuid not null references auth.users(id) on delete cascade,
-  routine_id uuid not null references public.routines(id) on delete cascade,
-  date date not null,
-  status text not null default 'PENDIENTE' check (status in ('PENDIENTE','COMPLETADA')),
-  completed_at timestamptz,
-  created_at timestamptz default now(),
-  unique (routine_id, date)
-);
-create index if not exists occ_user_idx on public.routine_occurrences(user_id);
-create index if not exists occ_date_idx on public.routine_occurrences(date);
-alter table public.routine_occurrences enable row level security;
-create policy "occ_all_own" on public.routine_occurrences for all using (auth.uid() = user_id) with check (auth.uid() = user_id);
-
--- ---------- projects ----------
-create table if not exists public.projects (
-  id uuid primary key default gen_random_uuid(),
-  user_id uuid not null references auth.users(id) on delete cascade,
-  name text not null,
-  description text,
-  category text check (category in ('TRABAJO','PERSONAL')),
-  status text not null default 'ACTIVO' check (status in ('ACTIVO','PAUSADO','COMPLETADO','ARCHIVADO')),
-  start_date date,
-  target_date date,
-  is_demo boolean default false,
-  created_at timestamptz default now()
-);
-create index if not exists projects_user_idx on public.projects(user_id);
-alter table public.projects enable row level security;
-create policy "projects_all_own" on public.projects for all using (auth.uid() = user_id) with check (auth.uid() = user_id);
-
--- ---------- waiting_items ----------
-create table if not exists public.waiting_items (
-  id uuid primary key default gen_random_uuid(),
-  user_id uuid not null references auth.users(id) on delete cascade,
-  what text not null,
-  person text,
-  company text,
-  followup_date date,
-  notes text,
-  status text not null default 'ESPERANDO' check (status in ('ESPERANDO','DAR SEGUIMIENTO','RESUELTO','CANCELADO')),
-  is_demo boolean default false,
-  created_at timestamptz default now()
-);
-create index if not exists waiting_user_idx on public.waiting_items(user_id);
-alter table public.waiting_items enable row level security;
-create policy "waiting_all_own" on public.waiting_items for all using (auth.uid() = user_id) with check (auth.uid() = user_id);
-
--- ---------- ideas ----------
-create table if not exists public.ideas (
-  id uuid primary key default gen_random_uuid(),
-  user_id uuid not null references auth.users(id) on delete cascade,
-  title text not null,
-  description text,
-  category text,
-  date date default current_date,
-  is_demo boolean default false,
-  created_at timestamptz default now()
-);
-create index if not exists ideas_user_idx on public.ideas(user_id);
-alter table public.ideas enable row level security;
-create policy "ideas_all_own" on public.ideas for all using (auth.uid() = user_id) with check (auth.uid() = user_id);
-
--- ---------- inbox_items ----------
-create table if not exists public.inbox_items (
-  id uuid primary key default gen_random_uuid(),
-  user_id uuid not null references auth.users(id) on delete cascade,
-  title text not null,
-  created_at timestamptz default now()
-);
-create index if not exists inbox_user_idx on public.inbox_items(user_id);
-alter table public.inbox_items enable row level security;
-create policy "inbox_all_own" on public.inbox_items for all using (auth.uid() = user_id) with check (auth.uid() = user_id);
-
--- ---------- push_subscriptions ----------
-create table if not exists public.push_subscriptions (
-  id uuid primary key default gen_random_uuid(),
-  user_id uuid not null references auth.users(id) on delete cascade,
-  endpoint text,
-  keys jsonb,
-  created_at timestamptz default now()
-);
-alter table public.push_subscriptions enable row level security;
-create policy "push_all_own" on public.push_subscriptions for all using (auth.uid() = user_id) with check (auth.uid() = user_id);
-`;
-
-/* ================= EVENTOS DE VISTA (delegación) ================= */
-function bindViewEvents(){
-  document.querySelectorAll("[data-toggle-task]").forEach(el=>{
-    el.onclick = (e)=>{ e.stopPropagation(); toggleTask(el.dataset.toggleTask); };
-  });
-  document.querySelectorAll("[data-toggle-occ]").forEach(el=>{
-    el.onclick = (e)=>{ e.stopPropagation(); toggleOccurrence(el.dataset.toggleOcc); };
-  });
-  document.querySelectorAll("[data-open]").forEach(el=>{
-    el.onclick = ()=> openDetail(el.dataset.open, el.dataset.id);
-  });
-  document.querySelectorAll("[data-filter-tareas]").forEach(el=>{
-    el.onclick = ()=>{ state.filters.tareas = el.dataset.filterTareas; render(); };
-  });
-  document.querySelectorAll("[data-filter-rutinas]").forEach(el=>{
-    el.onclick = ()=>{ state.filters.rutinas = el.dataset.filterRutinas; render(); };
-  });
-  const btnNewTask = document.getElementById("btn-new-task"); if(btnNewTask) btnNewTask.onclick = ()=>openTaskForm();
-  const btnNewRoutine = document.getElementById("btn-new-routine"); if(btnNewRoutine) btnNewRoutine.onclick = ()=>openRoutineForm();
-  const btnNewProject = document.getElementById("btn-new-project"); if(btnNewProject) btnNewProject.onclick = ()=>openProjectForm();
-  const btnNewWaiting = document.getElementById("btn-new-waiting"); if(btnNewWaiting) btnNewWaiting.onclick = ()=>openWaitingForm();
-  const btnNewIdea = document.getElementById("btn-new-idea"); if(btnNewIdea) btnNewIdea.onclick = ()=>openIdeaForm();
-  const btnCaptureInbox = document.getElementById("btn-capture-inbox"); if(btnCaptureInbox) btnCaptureInbox.onclick = ()=>openInboxCapture();
-
-  const calPrev = document.getElementById("cal-prev"); if(calPrev) calPrev.onclick = ()=>{ state.calMonth.m--; if(state.calMonth.m<0){state.calMonth.m=11;state.calMonth.y--;} render(); };
-  const calNext = document.getElementById("cal-next"); if(calNext) calNext.onclick = ()=>{ state.calMonth.m++; if(state.calMonth.m>11){state.calMonth.m=0;state.calMonth.y++;} render(); };
-  document.querySelectorAll("[data-cal-day]").forEach(el=>{ el.onclick = ()=>{ state.calSelected = el.dataset.calDay; render(); }; });
-
-  document.querySelectorAll("[data-theme-set]").forEach(el=>{
-    el.onclick = ()=>{ setTheme(el.dataset.themeSet); render(); };
-  });
-  const notifBtn = document.getElementById("btn-notif-toggle"); if(notifBtn) notifBtn.onclick = toggleNotifications;
-  const copySql = document.getElementById("btn-copy-sql");
-  if(copySql) copySql.onclick = ()=>{
-    navigator.clipboard.writeText(SQL_SETUP).then(()=>toast("SQL copiado al portapapeles","ok")).catch(()=>toast("No se pudo copiar","err"));
-  };
-  const demoCreate = document.getElementById("btn-demo-create"); if(demoCreate) demoCreate.onclick = createDemoData;
-  const demoDelete = document.getElementById("btn-demo-delete"); if(demoDelete) demoDelete.onclick = deleteDemoData;
-  const cfg2save = document.getElementById("cfg2-save");
-  if(cfg2save) cfg2save.onclick = ()=>{
-    const url = document.getElementById("cfg2-url").value.trim();
-    const key = document.getElementById("cfg2-key").value.trim();
-    saveConfig(url,key);
-    toast("Configuración guardada. Recargando…","ok");
-    setTimeout(()=>location.reload(), 700);
-  };
-  const cfg2test = document.getElementById("cfg2-test");
-  if(cfg2test) cfg2test.onclick = ()=>testSupabaseConnection(
-    document.getElementById("cfg2-url").value.trim(),
-    document.getElementById("cfg2-key").value.trim()
-  );
-}
-
-/* Prueba real, sin adivinar: llama directo a /auth/v1/settings (endpoint público
-   de GoTrue) con la URL y la clave que estén en los campos de esta pantalla en
-   este momento — no depende de si ya se guardaron ni de la instancia `sb`
-   existente, para poder diagnosticar antes de decidir guardar. */
-async function testSupabaseConnection(url, key, targetBox){
-  const box = targetBox || document.getElementById("cfg-test-result") || document.getElementById("auth-test-result");
-  const clean = validateSupabaseConfig(url, key);
-  if(!clean.ok){ box.innerHTML = `<div class="inline-note" style="color:var(--danger);">⚠️ ${escapeHtml(clean.message)}</div>`; return; }
-  box.innerHTML = `<div class="inline-note">Probando conexión con Supabase…</div>`;
-  try{
-    const headers = {
-      apikey: clean.key,
-      Authorization: `Bearer ${clean.key}`,
-      Accept: "application/json"
+      <div class="sh-foot">
+        ${orig?`<button class="btn danger" id="r-del">${ic("trash")}Eliminar</button>`:""}
+        <span class="sp"></span>
+        <button class="btn" id="r-cancel">Cancelar</button>
+        <button class="btn pri" id="r-save">Guardar</button>
+      </div>`;
+    const q = s => sh.querySelector(s);
+    q("#r-name").oninput = e=>{ r.name = e.target.value; };
+    q("#r-time").onchange = e=>{ r.time = e.target.value; };
+    q("#r-start").onchange = e=>{ r.start = e.target.value || today(); if(r.freq==="mensual") draw(); };
+    sh.querySelectorAll("[data-f]").forEach(b=>b.onclick=()=>{ r.freq=b.dataset.f; draw(); });
+    sh.querySelectorAll("[data-dw]").forEach(b=>b.onclick=()=>{ const d=+b.dataset.dw; r.days = r.days||[]; r.days = r.days.includes(d) ? r.days.filter(x=>x!==d) : [...r.days,d]; draw(); });
+    sh.querySelectorAll("[data-c]").forEach(b=>b.onclick=()=>{ r.cat=b.dataset.c||null; draw(); });
+    q("#r-notify").onclick = ()=>{ r.notify=!r.notify; if(r.notify) askNotif(); draw(); };
+    q("#r-active").onclick = ()=>{ r.active = r.active===false; draw(); };
+    q("#r-close").onclick = ()=>closeSheet();
+    q("#r-cancel").onclick = ()=>closeSheet();
+    q("#r-save").onclick = ()=>{
+      if(!r.name.trim()){ toast("Ponle nombre a la rutina"); q("#r-name").focus(); return; }
+      if(r.freq==="dias" && !(r.days||[]).length){ toast("Elige al menos un día"); return; }
+      r.name = r.name.trim(); r.time = r.time || null;
+      if(orig) Object.assign(orig, r); else db.routines.push(r);
+      save(); closeSheet(); toast(orig?"Rutina actualizada":"Rutina creada");
     };
-    const res = await fetch(clean.url + "/auth/v1/settings", {method:"GET", headers, cache:"no-store"});
-    const text = await res.text();
-    const fingerprint = clean.key.length > 12 ? `${clean.key.slice(0,4)}…${clean.key.slice(-4)} (${clean.key.length} caracteres)` : "clave corta";
-    if(res.ok){
-      box.innerHTML = `<div class="inline-note" style="color:var(--ok);">✅ Supabase respondió correctamente (HTTP ${res.status}).<br>Clave detectada: <code>${escapeHtml(fingerprint)}</code></div>`;
-    }else{
-      box.innerHTML = `<div class="inline-note" style="color:var(--danger);">⚠️ Supabase respondió HTTP ${res.status}.<br><code style="word-break:break-all;">${escapeHtml(text)}</code><br><small>Clave detectada: ${escapeHtml(fingerprint)}</small></div>`;
-    }
-  }catch(e){
-    box.innerHTML = `<div class="inline-note" style="color:var(--danger);">🔴 No se pudo completar la petición.<br><small>${escapeHtml(e.message||String(e))}</small><br>Si esto ocurre al abrir el HTML localmente, prueba abrirlo en Chrome/Edge y verifica que tu red permita conexiones a Supabase.</div>`;
-  }
+    if(orig) q("#r-del").onclick = ()=>{
+      if(!confirm("¿Eliminar esta rutina y su historial?")) return;
+      const i = db.routines.indexOf(orig);
+      db.routines.splice(i,1); save(); closeSheet();
+      toast("Rutina eliminada", ()=>{ db.routines.splice(i,0,orig); save(); render(); });
+    };
+    if(!orig && !r.name) setTimeout(()=>q("#r-name") && q("#r-name").focus(), 50);
+  };
+  draw();
 }
 
-/* ================= ACCIONES ================= */
-async function toggleTask(id){
-  const t = state.data.tasks.find(x=>x.id===id);
-  if(!t) return;
-  if(t.status==="COMPLETADA") await updateRow("tasks", id, {status:"PENDIENTE", completed_at:null});
-  else await updateRow("tasks", id, {status:"COMPLETADA", completed_at:new Date().toISOString()});
-}
-async function toggleOccurrence(id){
-  const o = state.data.routine_occurrences.find(x=>x.id===id);
-  if(!o) return;
-  if(o.status==="COMPLETADA") await updateRow("routine_occurrences", id, {status:"PENDIENTE", completed_at:null});
-  else await updateRow("routine_occurrences", id, {status:"COMPLETADA", completed_at:new Date().toISOString()});
+/* ---------- ajustes ---------- */
+function openSettings(){
+  const sh = openSheet("");
+  const draw = () => {
+    const theme = localStorage.getItem(LS_THEME) || "system";
+    const notif = localStorage.getItem(LS_NOTIF)==="1";
+    sh.innerHTML = `
+      <div class="sh-top"><h3>Ajustes</h3><button class="icon-btn" id="g-close">${ic("x")}</button></div>
+      <div class="sh-body">
+        <div class="fld"><label>Apariencia</label>
+          <div class="chips">${[["system","Automático"],["light","Claro"],["dark","Oscuro"]].map(([v,l])=>`<button class="chip ${theme===v?"on":""}" data-th="${v}">${l}</button>`).join("")}</div>
+        </div>
+        <div class="fld"><label>Recordatorios</label>
+          <div class="switch"><div class="lbl">Avisos del navegador<small>Para tareas con hora y rutinas con recordatorio. Solo funcionan con MIDPLANER abierto.</small></div><button class="tg ${notif?"on":""}" id="g-notif"></button></div>
+        </div>
+        <div class="fld"><label>Respaldo</label>
+          <div class="note" style="margin-bottom:10px">Tus tareas se guardan en este navegador y en este dispositivo. Descarga un respaldo de vez en cuando; también te sirve para pasarlas a otra computadora o al celular.</div>
+          <div class="two">
+            <button class="btn full" id="g-export">Descargar respaldo</button>
+            <button class="btn full" id="g-import">Cargar respaldo</button>
+          </div>
+          <input type="file" id="g-file" accept="application/json,.json" style="display:none">
+        </div>
+        <div class="fld"><label>Atajos de teclado</label>
+          <div class="note"><b>N</b> nueva tarea · <b>/</b> buscar · <b>1–5</b> cambiar de vista · <b>Esc</b> cerrar</div>
+        </div>
+        <div class="fld"><label>Zona de cuidado</label>
+          <button class="btn danger full" id="g-wipe">${ic("trash")}Borrar todos los datos</button>
+        </div>
+        <div style="text-align:center;color:var(--faint);font-size:12px;margin:18px 0 6px">MIDPLANER · ${db.tasks.length} tareas · ${db.routines.length} rutinas</div>
+      </div>`;
+    const q = s => sh.querySelector(s);
+    q("#g-close").onclick = ()=>closeSheet();
+    sh.querySelectorAll("[data-th]").forEach(b=>b.onclick=()=>{ localStorage.setItem(LS_THEME,b.dataset.th); applyTheme(); draw(); });
+    q("#g-notif").onclick = async ()=>{
+      if(localStorage.getItem(LS_NOTIF)==="1"){ localStorage.setItem(LS_NOTIF,"0"); draw(); return; }
+      const ok = await askNotif(); if(ok) toast("Avisos activados"); draw();
+    };
+    q("#g-export").onclick = ()=>{
+      const blob = new Blob([JSON.stringify({app:"midplaner",version:2,exportedAt:new Date().toISOString(),...db},null,2)],{type:"application/json"});
+      const a = document.createElement("a");
+      a.href = URL.createObjectURL(blob); a.download = `midplaner-respaldo-${today()}.json`;
+      document.body.appendChild(a); a.click(); a.remove();
+      setTimeout(()=>URL.revokeObjectURL(a.href), 2000);
+    };
+    q("#g-import").onclick = ()=>q("#g-file").click();
+    q("#g-file").onchange = e=>{
+      const f = e.target.files[0]; if(!f) return;
+      const rd = new FileReader();
+      rd.onload = ()=>{
+        try{
+          const d = JSON.parse(rd.result);
+          if(!Array.isArray(d.tasks)) throw new Error();
+          if(!confirm(`Este respaldo tiene ${d.tasks.length} tareas y ${(d.routines||[]).length} rutinas. Reemplazará lo que tienes ahora. ¿Continuar?`)) return;
+          db = {tasks:d.tasks, routines:Array.isArray(d.routines)?d.routines:[]};
+          save(); closeSheet(); toast("Respaldo cargado");
+        }catch(err){ toast("Ese archivo no es un respaldo de MIDPLANER"); }
+      };
+      rd.readAsText(f);
+    };
+    q("#g-wipe").onclick = ()=>{
+      if(!confirm("Se borrarán todas tus tareas y rutinas de este navegador. ¿Seguro?")) return;
+      db = {tasks:[], routines:[]}; save(); closeSheet(); toast("Datos borrados");
+    };
+  };
+  draw();
 }
 
-function setTheme(t){
-  localStorage.setItem(LS_THEME, t);
-  applyTheme();
-}
 function applyTheme(){
   const t = localStorage.getItem(LS_THEME) || "system";
   if(t==="system") document.documentElement.removeAttribute("data-theme");
   else document.documentElement.setAttribute("data-theme", t);
 }
 
-async function createDemoData(){
-  await insertRow("routines", {name:"DEMO: Revisar ventas", category:"TRABAJO", frequency:"LUNES_A_VIERNES", time:"08:30", start_date:todayStr(), active:true, notify:false, is_demo:true});
-  await insertRow("tasks", {title:"DEMO: Enviar cotización", category:"TRABAJO", priority:"ALTA", date:todayStr(), status:"PENDIENTE", is_demo:true});
-  const proj = await insertRow("projects", {name:"DEMO: Proyecto de ejemplo", category:"TRABAJO", status:"ACTIVO", start_date:todayStr(), is_demo:true});
-  await insertRow("waiting_items", {what:"DEMO: Esperando precio de Enrique", person:"Enrique", company:"Proveedor", followup_date:todayStr(), status:"ESPERANDO", is_demo:true});
-  await insertRow("ideas", {title:"DEMO: Automatizar reporte semanal", category:"TRABAJO", date:todayStr(), is_demo:true});
-  await ensureOccurrencesForRange(todayStr(), addDays(todayStr(),7));
-  toast("Datos de demostración creados","ok");
-  render();
-}
-async function deleteDemoData(){
-  for(const table of ["tasks","routines","projects","waiting_items","ideas"]){
-    const demos = state.data[table].filter(r=>r.is_demo);
-    for(const d of demos) await deleteRow(table, d.id);
-  }
-  toast("Datos de demostración eliminados","ok");
-  render();
+/* ---------------- toasts ---------------- */
+function toast(msg, undo){
+  const wrap = $("#toasts");
+  const el = document.createElement("div");
+  el.className = "toast";
+  el.innerHTML = `<span>${esc(msg)}</span>${undo?`<button>Deshacer</button>`:""}`;
+  if(undo) el.querySelector("button").onclick = ()=>{ undo(); el.remove(); };
+  wrap.appendChild(el);
+  while(wrap.children.length>2) wrap.firstChild.remove();
+  setTimeout(()=>{ el.style.transition="opacity .25s"; el.style.opacity="0"; setTimeout(()=>el.remove(),260); }, undo?5000:2600);
 }
 
-/* ================= NOTIFICACIONES ================= */
-async function toggleNotifications(){
-  const enabled = localStorage.getItem(LS_NOTIF) === "1";
-  if(enabled){ localStorage.setItem(LS_NOTIF,"0"); toast("Notificaciones desactivadas","info"); render(); return; }
-  if(!("Notification" in window)){ toast("Tu navegador no soporta notificaciones","err"); return; }
-  const perm = await Notification.requestPermission();
-  if(perm==="granted"){ localStorage.setItem(LS_NOTIF,"1"); toast("Notificaciones activadas","ok"); }
-  else toast("Permiso de notificaciones denegado","err");
-  render();
+/* ---------------- recordatorios ---------------- */
+async function askNotif(){
+  if(!("Notification" in window)){ toast("Este navegador no permite avisos"); return false; }
+  let p = Notification.permission;
+  if(p!=="granted") p = await Notification.requestPermission();
+  if(p==="granted"){ localStorage.setItem(LS_NOTIF,"1"); return true; }
+  toast("No se dio permiso para los avisos"); return false;
 }
-let notifiedToday = {};
-function startNotificationLoop(){
-  setInterval(()=>{
-    if(localStorage.getItem(LS_NOTIF) !== "1") return;
-    if(!("Notification" in window) || Notification.permission !== "granted") return;
-    const now = nowTimeStr();
-    const t = todayStr();
-    occurrencesOn(t).forEach(({occ,routine})=>{
-      if(!routine.notify || occ.status==="COMPLETADA") return;
-      if(routine.time && routine.time.slice(0,5) === now){
-        const key = routine.id+"_"+t;
-        if(notifiedToday[key]) return;
-        notifiedToday[key] = true;
-        try{ new Notification("🔔 MIDPLANER", {body: routine.name.toUpperCase()+"\nEs momento de realizar tu rutina."}); }catch(e){}
-      }
-    });
-  }, 30000);
-}
-
-/* ================= SHEETS / MODALES ================= */
-function openSheet(title, bodyHtml, bindFn){
-  closeSheet();
-  const ov = document.createElement("div");
-  ov.className = "overlay"; ov.id = "active-overlay";
-  ov.innerHTML = `<div class="sheet"><div class="sheet-head"><h3>${title}</h3><span class="x" id="sheet-close">×</span></div>${bodyHtml}</div>`;
-  document.body.appendChild(ov);
-  ov.addEventListener("click", (e)=>{ if(e.target===ov) closeSheet(); });
-  document.getElementById("sheet-close").onclick = closeSheet;
-  if(bindFn) bindFn(ov);
-}
-function closeSheet(){
-  const ov = document.getElementById("active-overlay");
-  if(ov) ov.remove();
-}
-
-function openQuickCapture(){
-  openSheet("Captura rápida", `
-    <div class="quick-opts">
-      <div class="quick-opt" data-qc="task"><span class="ic">📋</span>Nueva tarea</div>
-      <div class="quick-opt" data-qc="routine"><span class="ic">🔁</span>Nueva rutina</div>
-      <div class="quick-opt" data-qc="project"><span class="ic">📁</span>Nuevo proyecto</div>
-      <div class="quick-opt" data-qc="waiting"><span class="ic">⏳</span>Nuevo esperando</div>
-      <div class="quick-opt" data-qc="idea"><span class="ic">💡</span>Nueva idea</div>
-      <div class="quick-opt" data-qc="inbox"><span class="ic">📥</span>Solo capturar (Inbox)</div>
-    </div>`, (ov)=>{
-    ov.querySelectorAll("[data-qc]").forEach(el=>{
-      el.onclick = ()=>{
-        closeSheet();
-        const type = el.dataset.qc;
-        if(type==="task") openTaskForm();
-        else if(type==="routine") openRoutineForm();
-        else if(type==="project") openProjectForm();
-        else if(type==="waiting") openWaitingForm();
-        else if(type==="idea") openIdeaForm();
-        else if(type==="inbox") openInboxCapture();
-      };
-    });
-  });
-}
-
-function openInboxCapture(){
-  openSheet("Capturar", `
-    <div class="field"><label>¿Qué quieres capturar?</label><input id="f-title" type="text" placeholder="Ej. Hablar con Luis sobre propuesta"></div>
-    <div class="sheet-actions"><button class="btn" id="cancel">Cancelar</button><button class="btn primary" id="save">Guardar</button></div>
-  `, (ov)=>{
-    ov.querySelector("#cancel").onclick = closeSheet;
-    ov.querySelector("#f-title").focus();
-    ov.querySelector("#save").onclick = async ()=>{
-      const v = ov.querySelector("#f-title").value.trim();
-      if(!v){ toast("Escribe algo primero","err"); return; }
-      await insertRow("inbox_items", {title:v});
-      toast("Capturado en tu Inbox","ok");
-      closeSheet(); render();
-    };
-  });
-}
-
-/* ---------- Formulario: TAREA ---------- */
-function openTaskForm(existing){
-  const t = existing || {};
-  openSheet(existing?"Editar tarea":"Nueva tarea", `
-    <div class="field"><label>Título</label><input id="f-title" type="text" value="${escapeHtml(t.title||"")}" placeholder="¿Qué hay que hacer?"></div>
-    <div class="field"><label>Descripción</label><textarea id="f-desc">${escapeHtml(t.description||"")}</textarea></div>
-    <div class="field-row">
-      <div class="field"><label>Categoría</label><select id="f-cat"><option value="TRABAJO" ${t.category==="TRABAJO"?"selected":""}>Trabajo</option><option value="PERSONAL" ${t.category==="PERSONAL"?"selected":""}>Personal</option></select></div>
-      <div class="field"><label>Prioridad</label><select id="f-prio"><option value="ALTA" ${t.priority==="ALTA"?"selected":""}>Alta</option><option value="MEDIA" ${(!t.priority||t.priority==="MEDIA")?"selected":""}>Media</option><option value="BAJA" ${t.priority==="BAJA"?"selected":""}>Baja</option></select></div>
-    </div>
-    <div class="field-row">
-      <div class="field"><label>Fecha</label><input id="f-date" type="date" value="${t.date||todayStr()}"></div>
-      <div class="field"><label>Hora</label><input id="f-time" type="time" value="${t.time||""}"></div>
-    </div>
-    <div class="field"><label>Proyecto</label><select id="f-proj"><option value="">— Sin proyecto —</option>${state.data.projects.map(p=>`<option value="${p.id}" ${t.project_id===p.id?"selected":""}>${escapeHtml(p.name)}</option>`).join("")}</select></div>
-    <div class="field"><label>Estado</label><select id="f-status">${["PENDIENTE","EN PROGRESO","ESPERANDO","COMPLETADA"].map(s=>`<option value="${s}" ${t.status===s?"selected":""}>${s}</option>`).join("")}</select></div>
-    <div class="sheet-actions">
-      ${existing?`<button class="btn danger" id="del">Eliminar</button>`:""}
-      <button class="btn" id="cancel">Cancelar</button>
-      <button class="btn primary" id="save">Guardar</button>
-    </div>
-  `, (ov)=>{
-    ov.querySelector("#cancel").onclick = closeSheet;
-    if(existing) ov.querySelector("#del").onclick = async ()=>{ if(confirm("¿Eliminar esta tarea?")){ await deleteRow("tasks", t.id); closeSheet(); render(); } };
-    ov.querySelector("#save").onclick = async ()=>{
-      const title = ov.querySelector("#f-title").value.trim();
-      if(!title){ toast("El título es obligatorio","err"); return; }
-      const status = ov.querySelector("#f-status").value;
-      const payload = {
-        title, description: ov.querySelector("#f-desc").value,
-        category: ov.querySelector("#f-cat").value, priority: ov.querySelector("#f-prio").value,
-        date: ov.querySelector("#f-date").value || null, time: ov.querySelector("#f-time").value || null,
-        project_id: ov.querySelector("#f-proj").value || null, status,
-        completed_at: status==="COMPLETADA" ? (t.completed_at||new Date().toISOString()) : null
-      };
-      if(existing) await updateRow("tasks", t.id, payload);
-      else await insertRow("tasks", payload);
-      toast("Tarea guardada","ok");
-      closeSheet(); render();
-    };
-  });
-}
-
-/* ---------- Formulario: RUTINA ---------- */
-function openRoutineForm(existing){
-  const r = existing || {};
-  const days = r.custom_days || [];
-  const dowLabels = ["D","L","M","M","J","V","S"];
-  openSheet(existing?"Editar rutina":"Nueva rutina", `
-    <div class="field"><label>Nombre</label><input id="f-name" type="text" value="${escapeHtml(r.name||"")}" placeholder="Ej. Revisar ventas"></div>
-    <div class="field"><label>Descripción</label><textarea id="f-desc">${escapeHtml(r.description||"")}</textarea></div>
-    <div class="field-row">
-      <div class="field"><label>Categoría</label><select id="f-cat"><option value="TRABAJO" ${r.category==="TRABAJO"?"selected":""}>Trabajo</option><option value="PERSONAL" ${r.category==="PERSONAL"?"selected":""}>Personal</option></select></div>
-      <div class="field"><label>Hora</label><input id="f-time" type="time" value="${r.time||""}"></div>
-    </div>
-    <div class="field"><label>Frecuencia</label><select id="f-freq">
-      ${["DIARIA","LUNES_A_VIERNES","SEMANAL","CADA_2_SEMANAS","MENSUAL","PERSONALIZADA"].map(f=>`<option value="${f}" ${r.frequency===f?"selected":""}>${freqLabel({frequency:f})}</option>`).join("")}
-    </select></div>
-    <div class="field" id="custom-days-wrap" style="display:${r.frequency==="PERSONALIZADA"?"block":"none"};">
-      <label>Días</label>
-      <div class="days-picker">${dowLabels.map((d,i)=>`<div class="day-chip ${days.includes(i)?'active':''}" data-day="${i}">${d}</div>`).join("")}</div>
-    </div>
-    <div class="field-row">
-      <div class="field"><label>Fecha de inicio</label><input id="f-start" type="date" value="${r.start_date||todayStr()}"></div>
-      <div class="field"><label>Fecha final (opcional)</label><input id="f-end" type="date" value="${r.end_date||""}"></div>
-    </div>
-    <div class="field-row">
-      <div class="field"><label>Activa</label><select id="f-active"><option value="1" ${r.active!==false?"selected":""}>Sí</option><option value="0" ${r.active===false?"selected":""}>No</option></select></div>
-      <div class="field"><label>Notificación</label><select id="f-notify"><option value="1" ${r.notify?"selected":""}>Activada</option><option value="0" ${!r.notify?"selected":""}>Desactivada</option></select></div>
-    </div>
-    <div class="sheet-actions">
-      ${existing?`<button class="btn danger" id="del">Eliminar</button>`:""}
-      <button class="btn" id="cancel">Cancelar</button>
-      <button class="btn primary" id="save">Guardar</button>
-    </div>
-  `, (ov)=>{
-    let selectedDays = [...days];
-    ov.querySelector("#f-freq").onchange = (e)=>{
-      ov.querySelector("#custom-days-wrap").style.display = e.target.value==="PERSONALIZADA" ? "block":"none";
-    };
-    ov.querySelectorAll("[data-day]").forEach(el=>{
-      el.onclick = ()=>{
-        const d = Number(el.dataset.day);
-        if(selectedDays.includes(d)) selectedDays = selectedDays.filter(x=>x!==d);
-        else selectedDays.push(d);
-        el.classList.toggle("active");
-      };
-    });
-    ov.querySelector("#cancel").onclick = closeSheet;
-    if(existing) ov.querySelector("#del").onclick = async ()=>{ if(confirm("¿Eliminar esta rutina y sus ocurrencias?")){
-      await deleteRow("routines", r.id);
-      const occs = state.data.routine_occurrences.filter(o=>o.routine_id===r.id);
-      for(const o of occs) await deleteRow("routine_occurrences", o.id);
-      closeSheet(); render();
-    }};
-    ov.querySelector("#save").onclick = async ()=>{
-      const name = ov.querySelector("#f-name").value.trim();
-      if(!name){ toast("El nombre es obligatorio","err"); return; }
-      const payload = {
-        name, description: ov.querySelector("#f-desc").value, category: ov.querySelector("#f-cat").value,
-        time: ov.querySelector("#f-time").value || null, frequency: ov.querySelector("#f-freq").value,
-        custom_days: selectedDays, start_date: ov.querySelector("#f-start").value || todayStr(),
-        end_date: ov.querySelector("#f-end").value || null,
-        active: ov.querySelector("#f-active").value === "1", notify: ov.querySelector("#f-notify").value === "1"
-      };
-      let saved;
-      if(existing) { await updateRow("routines", r.id, payload); saved = {...r,...payload}; }
-      else saved = await insertRow("routines", payload);
-      await ensureOccurrencesForRange(todayStr(), addDays(todayStr(),14));
-      toast("Rutina guardada","ok");
-      closeSheet(); render();
-    };
-  });
-}
-
-/* ---------- Formulario: PROYECTO ---------- */
-function openProjectForm(existing){
-  const p = existing || {};
-  openSheet(existing?"Editar proyecto":"Nuevo proyecto", `
-    <div class="field"><label>Nombre</label><input id="f-name" type="text" value="${escapeHtml(p.name||"")}" placeholder="Ej. SANVER / CADIL"></div>
-    <div class="field"><label>Descripción</label><textarea id="f-desc">${escapeHtml(p.description||"")}</textarea></div>
-    <div class="field-row">
-      <div class="field"><label>Categoría</label><select id="f-cat"><option value="TRABAJO" ${p.category==="TRABAJO"?"selected":""}>Trabajo</option><option value="PERSONAL" ${p.category==="PERSONAL"?"selected":""}>Personal</option></select></div>
-      <div class="field"><label>Estado</label><select id="f-status">${["ACTIVO","PAUSADO","COMPLETADO","ARCHIVADO"].map(s=>`<option value="${s}" ${p.status===s?"selected":""}>${s}</option>`).join("")}</select></div>
-    </div>
-    <div class="field-row">
-      <div class="field"><label>Fecha de inicio</label><input id="f-start" type="date" value="${p.start_date||todayStr()}"></div>
-      <div class="field"><label>Fecha objetivo</label><input id="f-target" type="date" value="${p.target_date||""}"></div>
-    </div>
-    <div class="sheet-actions">
-      ${existing?`<button class="btn danger" id="del">Eliminar</button>`:""}
-      <button class="btn" id="cancel">Cancelar</button>
-      <button class="btn primary" id="save">Guardar</button>
-    </div>
-  `, (ov)=>{
-    ov.querySelector("#cancel").onclick = closeSheet;
-    if(existing) ov.querySelector("#del").onclick = async ()=>{ if(confirm("¿Eliminar este proyecto?")){ await deleteRow("projects", p.id); closeSheet(); render(); } };
-    ov.querySelector("#save").onclick = async ()=>{
-      const name = ov.querySelector("#f-name").value.trim();
-      if(!name){ toast("El nombre es obligatorio","err"); return; }
-      const payload = {
-        name, description: ov.querySelector("#f-desc").value, category: ov.querySelector("#f-cat").value,
-        status: ov.querySelector("#f-status").value, start_date: ov.querySelector("#f-start").value || null,
-        target_date: ov.querySelector("#f-target").value || null
-      };
-      if(existing) await updateRow("projects", p.id, payload);
-      else await insertRow("projects", payload);
-      toast("Proyecto guardado","ok");
-      closeSheet(); render();
-    };
-  });
-}
-
-/* ---------- Formulario: ESPERANDO ---------- */
-function openWaitingForm(existing){
-  const w = existing || {};
-  openSheet(existing?"Editar esperando":"Nuevo esperando", `
-    <div class="field"><label>¿Qué estás esperando?</label><input id="f-what" type="text" value="${escapeHtml(w.what||"")}" placeholder="Ej. Precio de proveedor"></div>
-    <div class="field-row">
-      <div class="field"><label>Persona</label><input id="f-person" type="text" value="${escapeHtml(w.person||"")}"></div>
-      <div class="field"><label>Empresa</label><input id="f-company" type="text" value="${escapeHtml(w.company||"")}"></div>
-    </div>
-    <div class="field"><label>Fecha de seguimiento</label><input id="f-followup" type="date" value="${w.followup_date||""}"></div>
-    <div class="field"><label>Notas</label><textarea id="f-notes">${escapeHtml(w.notes||"")}</textarea></div>
-    <div class="field"><label>Estado</label><select id="f-status">${["ESPERANDO","DAR SEGUIMIENTO","RESUELTO","CANCELADO"].map(s=>`<option value="${s}" ${w.status===s?"selected":""}>${s}</option>`).join("")}</select></div>
-    <div class="sheet-actions">
-      ${existing?`<button class="btn danger" id="del">Eliminar</button>`:""}
-      <button class="btn" id="cancel">Cancelar</button>
-      <button class="btn primary" id="save">Guardar</button>
-    </div>
-  `, (ov)=>{
-    ov.querySelector("#cancel").onclick = closeSheet;
-    if(existing) ov.querySelector("#del").onclick = async ()=>{ if(confirm("¿Eliminar este elemento?")){ await deleteRow("waiting_items", w.id); closeSheet(); render(); } };
-    ov.querySelector("#save").onclick = async ()=>{
-      const what = ov.querySelector("#f-what").value.trim();
-      if(!what){ toast("Describe qué estás esperando","err"); return; }
-      const payload = {
-        what, person: ov.querySelector("#f-person").value, company: ov.querySelector("#f-company").value,
-        followup_date: ov.querySelector("#f-followup").value || null, notes: ov.querySelector("#f-notes").value,
-        status: ov.querySelector("#f-status").value
-      };
-      if(existing) await updateRow("waiting_items", w.id, payload);
-      else await insertRow("waiting_items", payload);
-      toast("Guardado","ok");
-      closeSheet(); render();
-    };
-  });
-}
-
-/* ---------- Formulario: IDEA ---------- */
-function openIdeaForm(existing){
-  const i = existing || {};
-  openSheet(existing?"Editar idea":"Nueva idea", `
-    <div class="field"><label>Título</label><input id="f-title" type="text" value="${escapeHtml(i.title||"")}" placeholder="¿Cuál es la idea?"></div>
-    <div class="field"><label>Descripción</label><textarea id="f-desc">${escapeHtml(i.description||"")}</textarea></div>
-    <div class="field-row">
-      <div class="field"><label>Categoría</label><input id="f-cat" type="text" value="${escapeHtml(i.category||"")}" placeholder="Opcional"></div>
-      <div class="field"><label>Fecha</label><input id="f-date" type="date" value="${i.date||todayStr()}"></div>
-    </div>
-    <div class="sheet-actions">
-      ${existing?`<button class="btn danger" id="del">Eliminar</button>`:""}
-      <button class="btn" id="cancel">Cancelar</button>
-      <button class="btn primary" id="save">Guardar</button>
-    </div>
-  `, (ov)=>{
-    ov.querySelector("#cancel").onclick = closeSheet;
-    if(existing) ov.querySelector("#del").onclick = async ()=>{ if(confirm("¿Eliminar esta idea?")){ await deleteRow("ideas", i.id); closeSheet(); render(); } };
-    ov.querySelector("#save").onclick = async ()=>{
-      const title = ov.querySelector("#f-title").value.trim();
-      if(!title){ toast("El título es obligatorio","err"); return; }
-      const payload = { title, description: ov.querySelector("#f-desc").value, category: ov.querySelector("#f-cat").value, date: ov.querySelector("#f-date").value || todayStr() };
-      if(existing) await updateRow("ideas", i.id, payload);
-      else await insertRow("ideas", payload);
-      toast("Idea guardada","ok");
-      closeSheet(); render();
-    };
-  });
-}
-
-/* ---------- Detalle / apertura por tipo ---------- */
-function openDetail(type, id){
-  if(type==="task"){ const t = state.data.tasks.find(x=>x.id===id); if(t) openTaskForm(t); }
-  else if(type==="routine"){ const r = state.data.routines.find(x=>x.id===id); if(r) openRoutineForm(r); }
-  else if(type==="project"){ const p = state.data.projects.find(x=>x.id===id); if(p) openProjectForm(p); }
-  else if(type==="waiting"){ const w = state.data.waiting_items.find(x=>x.id===id); if(w) openWaitingForm(w); }
-  else if(type==="idea"){ const i = state.data.ideas.find(x=>x.id===id); if(i) openIdeaForm(i); }
-  else if(type==="inbox"){ openInboxDetail(id); }
-}
-function openInboxDetail(id){
-  const item = state.data.inbox_items.find(x=>x.id===id);
-  if(!item) return;
-  openSheet("Decidir qué es", `
-    <p style="margin-top:0;font-weight:600;">${escapeHtml(item.title)}</p>
-    <div class="quick-opts">
-      <div class="quick-opt" data-conv="task"><span class="ic">📋</span>Convertir en tarea</div>
-      <div class="quick-opt" data-conv="project"><span class="ic">📁</span>Convertir en proyecto</div>
-      <div class="quick-opt" data-conv="waiting"><span class="ic">⏳</span>Convertir en esperando</div>
-      <div class="quick-opt" data-conv="idea"><span class="ic">💡</span>Convertir en idea</div>
-      <div class="quick-opt" data-conv="delete"><span class="ic">🗑️</span>Eliminar</div>
-    </div>
-  `, (ov)=>{
-    ov.querySelectorAll("[data-conv]").forEach(el=>{
-      el.onclick = async ()=>{
-        const kind = el.dataset.conv;
-        closeSheet();
-        if(kind==="delete"){ await deleteRow("inbox_items", item.id); toast("Eliminado","ok"); render(); return; }
-        await deleteRow("inbox_items", item.id);
-        if(kind==="task") openTaskForm({title:item.title});
-        else if(kind==="project") openProjectForm({name:item.title});
-        else if(kind==="waiting") openWaitingForm({what:item.title});
-        else if(kind==="idea") openIdeaForm({title:item.title});
-      };
-    });
-  });
-}
-
-/* ================= BÚSQUEDA GLOBAL ================= */
-function openSearch(){
-  const ov = document.createElement("div");
-  ov.id = "search-overlay";
-  ov.innerHTML = `
-    <div style="display:flex;align-items:center;gap:10px;">
-      <input id="search-input" type="text" placeholder="Buscar tareas, rutinas, proyectos…" autofocus>
-      <button class="btn icon" id="search-close">×</button>
-    </div>
-    <div id="search-results"></div>
-  `;
-  document.body.appendChild(ov);
-  document.getElementById("search-close").onclick = ()=>ov.remove();
-  const input = document.getElementById("search-input");
-  input.oninput = ()=>renderSearchResults(input.value.trim().toLowerCase());
-  setTimeout(()=>input.focus(), 50);
-}
-function renderSearchResults(q){
-  const box = document.getElementById("search-results");
-  if(!q){ box.innerHTML = ""; return; }
-  const results = [];
-  state.data.tasks.forEach(t=>{ if((t.title+" "+(t.description||"")).toLowerCase().includes(q)) results.push({type:"Tarea",row:t,html:taskRowHtml(t)}); });
-  state.data.routines.forEach(r=>{ if((r.name+" "+(r.description||"")).toLowerCase().includes(q)) results.push({type:"Rutina",row:r,html:routineRowHtml(r)}); });
-  state.data.projects.forEach(p=>{ if((p.name+" "+(p.description||"")).toLowerCase().includes(q)) results.push({type:"Proyecto",row:p,html:projectRowHtml(p)}); });
-  state.data.waiting_items.forEach(w=>{ if((w.what+" "+(w.person||"")).toLowerCase().includes(q)) results.push({type:"Esperando",row:w,html:waitingFullRowHtml(w)}); });
-  state.data.ideas.forEach(i=>{ if((i.title+" "+(i.description||"")).toLowerCase().includes(q)) results.push({type:"Idea",row:i,html:ideaRowHtml(i)}); });
-  box.innerHTML = results.length ? `<div class="list">${results.map(r=>r.html).join("")}</div>` : emptyHtml("Sin resultados.");
-  box.querySelectorAll("[data-open]").forEach(el=>{
-    el.onclick = ()=>{ document.getElementById("search-overlay").remove(); openDetail(el.dataset.open, el.dataset.id); };
-  });
-}
-
-/* ================= BOOT ================= */
-async function boot(){
-  applyTheme();
-  if(!initClient()){
-    renderRoot();
-    return;
-  }
-  try{
-    const { data } = await sb.auth.getSession();
-    state.session = data.session;
-    state.user = data.session ? data.session.user : null;
-  }catch(e){ console.warn(e); }
-  if(state.user){
-    setupRealtime();
-    await fetchAllTables();
-    await ensureOccurrencesForRange(addDays(todayStr(),-1), addDays(todayStr(),14));
-    startNotificationLoop();
-  }
-  renderRoot();
-  if(sb){
-    sb.auth.onAuthStateChange((event, session)=>{
-      state.session = session;
-      state.user = session ? session.user : null;
-      if(state.user){
-        // La sesión puede llegar por confirmación de correo o por sesión persistida.
-        renderRoot();
-      }else{
-        renderRoot();
-      }
-    });
+const fired = new Set();
+function notify(title, body){
+  toast(`🔔 ${title}`);
+  if(localStorage.getItem(LS_NOTIF)!=="1" || !("Notification" in window) || Notification.permission!=="granted") return;
+  try{ new Notification(title, {body}); }
+  catch(e){
+    if(navigator.serviceWorker && navigator.serviceWorker.ready){
+      navigator.serviceWorker.ready.then(reg=>reg.showNotification(title,{body})).catch(()=>{});
+    }
   }
 }
-document.addEventListener("DOMContentLoaded", boot);
-window.addEventListener("supabase-ready", ()=>{ if(!sb) boot(); });
-window.addEventListener("error", (ev)=>{
-  const root=document.getElementById("root");
-  const loading=document.getElementById("boot-loading");
-  if(root && !root.innerHTML){
-    if(loading) loading.style.display="none";
-    root.style.display="block";
-    root.innerHTML=`<div style="max-width:760px;margin:40px auto;padding:24px;font-family:system-ui,sans-serif;"><h2>MIDPLANER</h2><p>Ocurrió un error al cargar la aplicación.</p><pre style="white-space:pre-wrap;background:#f1f1ef;padding:12px;border-radius:8px;">${escapeHtml(ev.error?.message || ev.message || "Error desconocido")}</pre><p>Recarga la página. Si persiste, abre la consola del navegador para ver el detalle.</p></div>`;
-  }
-});
+function checkReminders(){
+  const d = today(), now = nowHM();
+  dueOn(d).forEach(t=>{
+    if(t.time===now && !fired.has(t.id+d+now)){ fired.add(t.id+d+now); notify(t.title, "Tarea de MIDPLANER"); }
+  });
+  routinesOn(d).forEach(r=>{
+    if(r.notify && r.time===now && !routineDone(r,d) && !fired.has(r.id+d)){ fired.add(r.id+d); notify(r.name, "Es momento de tu rutina"); }
+  });
+}
+setInterval(checkReminders, 20000);
+
+/* refresca al cambiar de día o al volver a la pestaña */
+let lastDay = today();
+setInterval(()=>{ if(today()!==lastDay){ lastDay=today(); if(!$(".overlay")) render(); } }, 60000);
+document.addEventListener("visibilitychange", ()=>{ if(!document.hidden && !$(".overlay") && !document.activeElement.matches("input,textarea")) render(); });
+
+/* ---------------- arranque ---------------- */
+applyTheme();
+render();
+checkReminders();
 </script>
 </body>
 </html>
